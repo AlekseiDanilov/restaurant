@@ -8,15 +8,16 @@ import {
   Input,
   InputLabel,
   Paper,
-  Typography
+  Typography,
 } from '@material-ui/core';
 
 import style from './style';
 
 import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
 
 function SignIn(props) {
-  const {classes} = props;
+  const { classes } = props;
 
   return (
     <main className={classes.main}>
@@ -34,8 +35,10 @@ function SignIn(props) {
             <InputLabel htmlFor="password">Password</InputLabel>
             <Input name="password" type="password" id="password" autoComplete="current-password"/>
           </FormControl>
+          {/*TODO:/ hear will be good authenticate!!!*/}
           <Button
-            type="submit"
+            component={Link}
+            to="/"
             variant="contained"
             color="primary"
             className={classes.submit}
