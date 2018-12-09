@@ -9,5 +9,5 @@ export default theme => ({
     padding: theme.spacing.unit * 3,
     height: '100vh',
     overflow: 'auto',
-  },
+  }
 });

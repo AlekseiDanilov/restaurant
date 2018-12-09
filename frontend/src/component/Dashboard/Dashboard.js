@@ -11,12 +11,12 @@ class Dashboard extends React.Component {
   render() {
     const { classes, number, children } = this.props;
     return (
-      <div>
+      <div className={classes.root}>
         <CssBaseline/>
         <AppBar position="absolute">
           <ToolbarMenu number={number}/>
         </AppBar>
-        <main>
+        <main className={classes.content}>
           <div className={classes.appBarSpacer}/>
           {children}
         </main>

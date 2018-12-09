@@ -11,12 +11,20 @@ import RoomIcon from '@material-ui/icons/MeetingRoom';
 import { Link, Route, Switch } from 'react-router-dom';
 import UsersPanel from './UsersPanel';
 import RoomsPanel from './RoomsPanel';
+import { withStyles } from '@material-ui/core';
+
+const styles = theme => ({
+  leftGrig: {
+    paddingLeft: theme.spacing.unit * 2
+  }
+});
 
 class Configuration extends React.Component {
   render() {
+    const {classes} = this.props;
     return (
       <Dashboard number={3}>
-        <Grid container spacing={16}>
+        <Grid container>
           <Grid item xs={2}>
             <Paper>
               <MenuList>
@@ -35,7 +43,7 @@ class Configuration extends React.Component {
               </MenuList>
             </Paper>
           </Grid>
-          <Grid item xs={10}>
+          <Grid item className={classes.leftGrig} xs={10}>
             <Paper>
               <Switch>
                 <Route path="/config" exact component={RoomsPanel}/>
@@ -50,4 +58,4 @@ class Configuration extends React.Component {
 }
 
 
-export default Configuration;
+export default withStyles(styles)(Configuration);

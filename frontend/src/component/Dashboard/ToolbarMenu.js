@@ -11,7 +11,7 @@ class ToolbarMenu extends React.Component {
   render() {
     const { number } = this.props;
     return (
-      <Grid container spacing={16}>
+      <Grid container spacing={0}>
         <Grid item xs={10}>
           <Tabs value={number}>
             <Tab label="Reservations" component={Link} to="/"/>
