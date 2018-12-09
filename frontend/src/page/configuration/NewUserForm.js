@@ -2,7 +2,8 @@ import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 const styles = theme => ({
   container: {
@@ -25,17 +26,26 @@ const styles = theme => ({
 
 class NewUserForm extends React.Component {
 
-  state = {
+  initialState = {
     name: '',
     email: '',
     username: '',
     password: '',
   };
 
+  state = this.initialState;
+
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
     });
+  };
+
+  submit = () => {
+    axios.post("/api/user", this.state).then(() => {
+      this.setState(this.initialState);
+      this.props.history.push("/config/users");
+    })
   };
 
   render() {
@@ -84,9 +94,7 @@ class NewUserForm extends React.Component {
         <Button variant="contained"
                 className={classes.button}
                 color="primary"
-                onClick={() => {
-                  console.log(this.state)
-                }}>
+                onClick={this.submit}>
           Save
         </Button>
         <Button variant="contained"
@@ -101,5 +109,4 @@ class NewUserForm extends React.Component {
   }
 }
 
-
-export default withStyles(styles)(NewUserForm);
+export default withRouter(withStyles(styles)(NewUserForm));

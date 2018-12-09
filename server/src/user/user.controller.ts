@@ -12,6 +12,15 @@ export class UserController {
     return this.userService.create(params);
   }
 
+  @Get()
+  async list() {
+    const list = await this.userService.list();
+    return list.map(u => {
+      const {passwordHash,  ...withoutPassword} = u;
+      return withoutPassword;
+    })
+  }
+
   @Get(':id')
   async find(@Param() params): Promise<User> {
     return this.userService.find(params.id);

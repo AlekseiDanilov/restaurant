@@ -12,6 +12,7 @@ export class UserService {
   constructor(readonly db: Db) {
   }
 
+  // TODO: move boilerplate to BaseService
   async create(dto: CreateUpdateUserDto): Promise<User> {
     return this.db.tx(trx => this.db
       .table(this.USER_TABLE)
@@ -50,6 +51,12 @@ export class UserService {
       .from(this.USER_TABLE)
       .where({ id: id })
       .first();
+  }
+
+  async list(): Promise<Array<User>> {
+    return this.db.do()
+      .select('*')
+      .from(this.USER_TABLE)
   }
 
   async delete(id: string): Promise<void> {

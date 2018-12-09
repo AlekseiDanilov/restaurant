@@ -15,14 +15,16 @@ const styles = theme => ({
     margin: theme.spacing.unit * 2
   },
   table: {
-    margin: theme.spacing.unit * 2
+    padding: theme.spacing.unit * 2
   }
 });
 
 class UserTable extends React.Component {
 
   componentWillMount() {
-
+    axios.get('/api/user')
+      .then(res => res.data)
+      .then(rows => this.setState({rows}))
   }
 
   state = {
@@ -47,7 +49,7 @@ class UserTable extends React.Component {
             </Button>
           </Grid>
           <Grid item>
-            <Table className={classes.table} padding={'dense'}>
+            <Table className={classes.table}>
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
@@ -59,9 +61,9 @@ class UserTable extends React.Component {
                 {rows.map(row => {
                   return (
                     <TableRow key={row.id}>
-                      <TableCell component="th" scope="row">{row.name}</TableCell>
-                      <TableCell numeric>{row.username}</TableCell>
-                      <TableCell numeric>{row.email}</TableCell>
+                      <TableCell align="left" component="th" scope="row">{row.name}</TableCell>
+                      <TableCell align="left">{row.username}</TableCell>
+                      <TableCell align="left">{row.email}</TableCell>
                     </TableRow>
                   );
                 })}
