@@ -22,7 +22,7 @@ const styles = theme => ({
 class UserTable extends React.Component {
 
   componentWillMount() {
-    axios.get('/api/user')
+    axios.get('http://aleksei.bithosting.eu:3001/api/user')
       .then(res => res.data)
       .then(rows => this.setState({rows}))
   }
