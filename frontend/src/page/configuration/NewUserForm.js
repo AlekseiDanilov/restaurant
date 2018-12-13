@@ -42,7 +42,7 @@ class NewUserForm extends React.Component {
   };
 
   submit = () => {
-    axios.post("http://aleksei.bithosting.eu:3001/api/user", this.state).then(() => {
+    axios.post("/api/user", this.state).then(() => {
       this.setState(this.initialState);
       this.props.history.push("/config/users");
     })
