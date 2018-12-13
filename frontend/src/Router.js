@@ -14,11 +14,11 @@ export default () => {
   return <BrowserRouter>
     <Switch>
       <Route path="/" exact component={Reservation}/>
-      <Route path="/daily" component={Daily}/>
-      <Route path="/search" component={Search}/>
-      <Route path="/config" component={Configuration}/>
-      <Route path="/login" component={SignIn}/>
-      <Route comp={NotFound}/>
+      <Route path="/daily" exact component={Daily}/>
+      <Route path="/search" exact component={Search}/>
+      <Route path="/config" exact component={Configuration}/>
+      <Route path="/login"  exact component={SignIn}/>
+      <Route component={NotFound}/>
     </Switch>
   </BrowserRouter>;
 };

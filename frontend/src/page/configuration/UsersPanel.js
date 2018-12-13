@@ -8,7 +8,7 @@ class UsersPanel extends React.Component {
     return (
       <Switch>
         <Route path="/config/users" exact component={UserTable}/>
-        <Route path="/config/users/new" component={NewUserForm}/>
+        <Route path="/config/users/new" exact component={NewUserForm}/>
       </Switch>
     );
   }
