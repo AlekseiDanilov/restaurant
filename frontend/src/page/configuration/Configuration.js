@@ -47,7 +47,7 @@ class Configuration extends React.Component {
             <Paper>
               <Switch>
                 <Route path="/config" exact component={RoomsPanel}/>
-                <Route path="/config/users" exact component={UsersPanel}/>
+                <Route path="/config/users" component={UsersPanel}/>
               </Switch>
             </Paper>
           </Grid>

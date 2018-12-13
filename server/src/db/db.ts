@@ -13,7 +13,7 @@ export class Db {
       client: 'pg',
       connection: {
         host : 'localhost',
-        port : '5432',
+        port : '5433',
         user : 'postgres',
         password : 'postgres',
         database : 'restaurant'

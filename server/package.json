@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "0.0.1",
-  "description": "Reastaurant API",
+  "description": "Restaurant API",
   "author": "A. Danilov",
   "license": "MIT",
   "scripts": {
