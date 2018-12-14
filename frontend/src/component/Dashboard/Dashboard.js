@@ -13,7 +13,7 @@ class Dashboard extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline/>
-        <AppBar position="absolute">
+        <AppBar>
           <ToolbarMenu number={number}/>
         </AppBar>
         <main className={classes.content}>
