@@ -6,7 +6,7 @@ import Daily from './page/Daily';
 import Search from './page/Search';
 import Configuration from './page/configuration/Configuration';
 import Dashboard from './component/Dashboard/Dashboard';
-import SwipeableRoutes from 'react-swipeable-routes';
+//import SwipeableRoutes from 'react-swipeable-routes';
 
 const NotFound = () => {
   return <h1>Not found</h1>;
@@ -18,12 +18,12 @@ export default class Router extends Component {
       <Switch>
         <Route path="/login" exact component={SignIn}/>
         <Dashboard>
-          <SwipeableRoutes>
+          {/*<SwipeableRoutes>*/}
             <Route path="/" exact component={Reservation}/>
             <Route path="/daily" component={Daily}/>
             <Route path="/search" component={Search}/>
             <Route path="/config" component={Configuration}/>
-          </SwipeableRoutes>
+          {/*</SwipeableRoutes>*/}
         </Dashboard>
         <Route component={NotFound}/>
       </Switch>

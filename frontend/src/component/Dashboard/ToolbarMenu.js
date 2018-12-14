@@ -31,7 +31,7 @@ class ToolbarMenu extends React.Component {
   render() {
     return (
       <Grid container spacing={8}>
-        <Grid item xs={10}>
+        <Grid item xs={9}>
           <Tabs value={this.getTabValue()} onChange={this.handleChange}>
             <Tab label="Reservations" component={Link} to="/"/>
             <Tab label="Daily plan" component={Link} to="/daily"/>
@@ -39,7 +39,7 @@ class ToolbarMenu extends React.Component {
             <Tab label="Configuration" component={Link} to="/config"/>
           </Tabs>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <Grid container justify="flex-end" spacing={8}>
             <Grid item>
               <IconButton color="inherit">
