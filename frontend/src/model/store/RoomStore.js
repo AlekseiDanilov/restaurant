@@ -10,13 +10,13 @@ export default class RoomStore {
   }
 
   createDefaultRectFurniture() {
-    this.furniture.push(new FurnitureModel('rect', 40, 40, 80, 55));
-    this.furniture.push(new FurnitureModel('rect', 160, 40, 40, 40));
+    this.furniture.push(new FurnitureModel('rect', 40, 50, 80, 55));
+    this.furniture.push(new FurnitureModel('rect', 160, 60, 40, 40));
   }
 
   createDefaultCircleFurniture() {
-    this.furniture.push(new FurnitureModel('circle', 280, 60, 70, 70));
-    this.furniture.push(new FurnitureModel('circle', 360, 60, 40, 40));
+    this.furniture.push(new FurnitureModel('circle', 280, 75, 70, 70));
+    this.furniture.push(new FurnitureModel('circle', 360, 70, 40, 40));
   }
 
   get rectFurniture() {

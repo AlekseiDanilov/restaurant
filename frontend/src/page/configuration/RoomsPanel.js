@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Stage, Layer, Rect, Circle } from 'react-konva';
+import { Stage, Layer, Rect, Circle, Text, Line } from 'react-konva';
 import { withStyles } from '@material-ui/core';
 import { compose } from 'recompose';
 import { inject, observer } from 'mobx-react';
@@ -32,30 +32,41 @@ class RoomsPanel extends React.Component {
     const { clientHeight, clientWidth } = this.state;
     const { classes, roomStore } = this.props;
     const { rectFurniture, circleFurniture } = roomStore;
-    console.log(rectFurniture);
     return (
       <Stage ref={this.konva}
              width={clientWidth}
              height={clientHeight}
              className={classes.konva}>
-        <Layer>{rectFurniture.map((r, idx) => {
-          return <Rect
-            key={idx}
-            x={r.x}
-            y={r.y}
-            width={r.width}
-            height={r.height}
-            fill={r.color}
-            draggable
-            //shadowBlur={3}
-            onDragStart={() => {
-              if(r.color === "brown") {
-                r.color = "green";
-                roomStore.createDefaultRectFurniture();
-              }
-            }}
-          />;
-        })}
+        <Layer>
+          <Text text="Big rect" x={50} y={15} fontSize={15}/>
+          <Text text="Small rect" x={150} y={15} fontSize={15}/>
+          <Text text="Big circle" x={245} y={15} fontSize={15}/>
+          <Text text="Small circle" x={320} y={15} fontSize={15}/>
+          <Line
+            x={10}
+            y={130}
+            points={[0, 3, 400, 3]}
+            stroke="black"
+            strokeWidth={2}
+          />
+          {rectFurniture.map((r, idx) => {
+            return <Rect
+              key={idx}
+              x={r.x}
+              y={r.y}
+              width={r.width}
+              height={r.height}
+              fill={r.color}
+              draggable
+              //shadowBlur={3}
+              onDragStart={() => {
+                if (r.color === 'brown') {
+                  r.color = 'green';
+                  roomStore.createDefaultRectFurniture();
+                }
+              }}
+            />;
+          })}
           {circleFurniture.map((c, idx) => {
             return <Circle
               key={idx}
@@ -67,8 +78,8 @@ class RoomsPanel extends React.Component {
               draggable
               //shadowBlur={3}
               onDragStart={() => {
-                if(c.color === "brown") {
-                  c.color = "green";
+                if (c.color === 'brown') {
+                  c.color = 'green';
                   roomStore.createDefaultCircleFurniture();
                 }
               }}
