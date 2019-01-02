@@ -21,16 +21,21 @@
   "dependencies": {
     "@nestjs/common": "^5.4.0",
     "@nestjs/core": "^5.4.0",
+    "@nestjs/jwt": "latest",
+    "@nestjs/passport": "latest",
     "@types/knex": "^0.15.1",
     "knex": "^0.16.0-next5",
+    "md5": "latest",
+    "passport": "^0.4.0",
+    "passport-jwt": "latest",
     "pg": "^7.7.1",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.2.2",
     "typescript": "^3.0.1",
-    "uuid4": "latest",
     "uuid": "latest",
-    "md5": "latest"
+    "uuid4": "latest",
+    "@nest-middlewares/cookie-parser": "latest"
   },
   "devDependencies": {
     "@nestjs/testing": "^5.1.0",

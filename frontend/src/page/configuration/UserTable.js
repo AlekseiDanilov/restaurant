@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableCell from '@material-ui/core/TableCell/TableCell';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import { withStyles } from '@material-ui/core';
-import axios from 'axios';
+import api from "../../api/api";
 
 const styles = theme => ({
   button: {
@@ -22,7 +22,7 @@ const styles = theme => ({
 class UserTable extends React.Component {
 
   componentWillMount() {
-    axios.get('/api/user')
+    api.client.get('/api/user')
       .then(res => res.data)
       .then(rows => this.setState({rows}))
   }

@@ -3,7 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 import { Link, withRouter } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api/api'
 
 const styles = theme => ({
   container: {
@@ -42,7 +42,7 @@ class NewUserForm extends React.Component {
   };
 
   submit = () => {
-    axios.post("/api/user", this.state).then(() => {
+    api.client.post("/api/user", this.state).then(() => {
       this.setState(this.initialState);
       this.props.history.push("/config/users");
     })
