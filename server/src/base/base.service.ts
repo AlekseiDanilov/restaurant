@@ -40,7 +40,7 @@ export class BaseService<Entity extends Identifiable<string>, FindParam> {
     .first();
   }
 
-  async findBy(param: FindParam): Promise<Entity> {
+  async findBy(param: object): Promise<Entity> {
     return this.db.do()
     .select('*')
     .from(this.tableName())
