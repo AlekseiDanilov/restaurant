@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import Promise from 'bluebird';
 import * as Knex from 'knex';
 
@@ -12,11 +12,11 @@ export class Db {
     this.knex = Knex({
       client: 'pg',
       connection: {
-        host : 'localhost',
-        port : '5432',
-        user : 'postgres',
-        password : 'postgres',
-        database : 'restaurant'
+        host: 'localhost',
+        port: '5432',
+        user: 'postgres',
+        password: 'postgres',
+        database: 'restaurant'
       },
       migrations: {
         tableName: 'migrations',
@@ -26,7 +26,7 @@ export class Db {
     this.knex.migrate.latest();
   }
 
-  tx(foo: (trx: Knex.Transaction) => Promise<any>): Promise<any> {
+  tx<T>(foo: (trx: Knex.Transaction) => Promise<T>): Promise<T> {
     return this.knex.transaction(trx => {
         return foo(trx).then(trx.commit).catch(trx.rollback);
       }

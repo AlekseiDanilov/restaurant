@@ -6,6 +6,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import Grid from '@material-ui/core/Grid/Grid';
+import api from "../../api/api";
+import Tooltip from "@material-ui/core/es/Tooltip/Tooltip";
 
 class ToolbarMenu extends React.Component {
 
@@ -42,12 +44,14 @@ class ToolbarMenu extends React.Component {
         <Grid item xs={3}>
           <Grid container justify="flex-end" spacing={8}>
             <Grid item>
-              <IconButton color="inherit">
-                <AccountCircle/>
-              </IconButton>
+              <Tooltip title="Username" placement="left">
+                <IconButton color="inherit">
+                  <AccountCircle/>
+                </IconButton>
+              </Tooltip>
             </Grid>
             <Grid item>
-              <IconButton color="inherit" component={Link} to="/login">
+              <IconButton color="inherit" onClick={api.logout}>
                 <ExitToApp/>
               </IconButton>
             </Grid>

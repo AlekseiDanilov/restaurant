@@ -10,4 +10,8 @@ export class CryptoHelper {
   static md5(message: string): string {
     return md5(message);
   }
+
+  static equalMd5(hash: string, message: string): boolean {
+    return hash === md5(message);
+  }
 }
