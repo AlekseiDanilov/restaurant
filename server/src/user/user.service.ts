@@ -3,10 +3,9 @@ import {User} from './user';
 import {CreateUpdateUserDto} from '../dto/create-update-user-dto';
 import {CryptoHelper} from '../helper/cryptoHelper';
 import {BaseService} from "../base/base.service";
-import {FindParamUser} from "./find-param-user";
 
 @Injectable()
-export class UserService extends BaseService<User, FindParamUser> {
+export class UserService extends BaseService<User> {
 
   tableName(): string {
     return "user";

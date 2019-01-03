@@ -3,7 +3,7 @@ import Identifiable from "./identifiable";
 import {Injectable} from "@nestjs/common";
 
 @Injectable()
-export class BaseService<Entity extends Identifiable<string>, FindParam> {
+export class BaseService<Entity extends Identifiable<string>> {
   constructor(readonly db: Db) {
   }
 
