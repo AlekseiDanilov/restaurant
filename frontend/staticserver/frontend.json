@@ -5,7 +5,8 @@
       "script": "./index.js",
       "watch": true,
       "env": {
-        "ENABLE_HTTPS": true
+        "ENABLE_HTTPS": true,
+        "COMMON_NAME": "aleksei.bithosting.eu"
       }
     }
   ]

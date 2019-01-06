@@ -5,6 +5,7 @@ const proxy = require('http-proxy-middleware');
 const https = require('https');
 const pem = require('pem');
 const enableHttps = process.env.ENABLE_HTTPS;
+const commonName = process.env.COMMON_NAME || "localhost";
 const http = require('http');
 const app = express();
 
@@ -19,7 +20,7 @@ const backendServerProxy = proxy({
 
 if (enableHttps) {
   console.log('HTTPS enabled!');
-  pem.createCertificate({days: 7, selfSigned: true}, function (err, opts) {
+  pem.createCertificate({days: 7, selfSigned: true, commonName: commonName}, function (err, opts) {
     if (err) {
       throw err
     }
