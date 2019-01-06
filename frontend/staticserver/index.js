@@ -20,15 +20,11 @@ const backendServerProxy = proxy({
 
 if (enableHttps) {
   console.log('HTTPS enabled!');
-
-  pem.createCSR({commonName: commonName}, function (err, opts) {
-    console.log(opts);
-    pem.createCertificate({days: 7, selfSigned: true, csr: opts.csr}, function (err, opts) {
-      if (err) {
-        throw err
-      }
-      https.createServer({key: opts.serviceKey, cert: opts.certificate}, app).listen(443)
-    });
+  pem.createCertificate({days: 7, selfSigned: true, commonName: commonName}, function (err, opts) {
+    if (err) {
+      throw err
+    }
+    https.createServer({key: opts.serviceKey, cert: opts.certificate}, app).listen(443)
   });
 } else {
   http.createServer(app).listen(80);
