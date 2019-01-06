@@ -1,14 +1,18 @@
 import React from 'react';
 import Button from '@material-ui/core/Button/Button';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid/Grid';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableCell from '@material-ui/core/TableCell/TableCell';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import { withStyles } from '@material-ui/core';
-import api from "../../api/api";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import {withStyles} from '@material-ui/core';
+import {inject, observer} from 'mobx-react';
+import {compose} from 'recompose';
+import withConfirmAction from "../../hoc/withConfirmAction";
 
 const styles = theme => ({
   button: {
@@ -19,21 +23,22 @@ const styles = theme => ({
   }
 });
 
+const DeleteUserButton = withConfirmAction(({openConfirmDialog}) => {
+  return <Button onClick={openConfirmDialog}>
+    <DeleteIcon color="secondary"/>
+  </Button>
+});
+
 class UserTable extends React.Component {
 
   componentWillMount() {
-    api.client.get('/api/user')
-      .then(res => res.data)
-      .then(rows => this.setState({rows}))
+    const {userStore} = this.props;
+    userStore.load();
   }
 
-  state = {
-    rows: []
-  };
-
   render() {
-    const {classes} = this.props;
-    const {rows} = this.state;
+    const {classes, userStore} = this.props;
+    const {users} = userStore;
     return (
       <React.Fragment>
         <Grid container
@@ -55,15 +60,25 @@ class UserTable extends React.Component {
                   <TableCell>Name</TableCell>
                   <TableCell>Username</TableCell>
                   <TableCell>Email</TableCell>
+                  <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map(row => {
+                {users.map(user => {
                   return (
-                    <TableRow key={row.id}>
-                      <TableCell align="left" component="th" scope="row">{row.name}</TableCell>
-                      <TableCell align="left">{row.username}</TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
+                    <TableRow key={user.id}>
+                      <TableCell align="left">{user.name}</TableCell>
+                      <TableCell align="left">{user.username}</TableCell>
+                      <TableCell align="left">{user.email}</TableCell>
+                      <TableCell align="center">
+                        <Button component={Link} to={`/config/users/${user.id}`}>
+                          <EditIcon color="primary"/>
+                        </Button>
+                        {userStore.canNotDeleteUser(user.id) &&
+                        <DeleteUserButton confirmText={`Do you confirm the deletion of user ${user.name}?`}
+                                          confirmAction={() => userStore.deleteUser(user.id)}/>
+                        }
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -76,4 +91,8 @@ class UserTable extends React.Component {
   }
 }
 
-export default withStyles(styles)(UserTable);
+export default compose(
+  withStyles(styles),
+  inject('userStore'),
+  observer
+)(UserTable);

@@ -2,8 +2,10 @@ import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-import { Link, withRouter } from 'react-router-dom';
-import api from '../../api/api'
+import {Link} from 'react-router-dom';
+import {compose} from 'recompose';
+import {inject} from 'mobx-react';
+import mapRouteParamToProps from "../../hoc/mapRouteParamToProps";
 
 const styles = theme => ({
   container: {
@@ -24,9 +26,10 @@ const styles = theme => ({
 
 });
 
-class NewUserForm extends React.Component {
+class AddEditUserForm extends React.Component {
 
   initialState = {
+    id: '',
     name: '',
     email: '',
     username: '',
@@ -35,6 +38,14 @@ class NewUserForm extends React.Component {
 
   state = this.initialState;
 
+  constructor(props) {
+    super(props);
+    const {userId, userStore} = props;
+    if (userId) {
+      userStore.findById(userId).then(u => this.setState(u));
+    }
+  }
+
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
@@ -42,14 +53,17 @@ class NewUserForm extends React.Component {
   };
 
   submit = () => {
-    api.client.post("/api/user", this.state).then(() => {
-      this.setState(this.initialState);
+    const {userId, userStore} = this.props;
+    const user = this.state;
+    const action = userId ? userStore.updateUser : userStore.saveUser;
+    action(user).then(() => {
       this.props.history.push("/config/users");
     })
   };
 
   render() {
-    const { classes } = this.props;
+    const {classes} = this.props;
+    const user = this.state;
     return (
       <div>
         <form className={classes.container} autoComplete="off">
@@ -57,7 +71,7 @@ class NewUserForm extends React.Component {
             id="name"
             label="Name"
             className={classes.textField}
-            value={this.state.name}
+            value={user.name}
             onChange={this.handleChange('name')}
             margin="normal"
           />
@@ -65,12 +79,14 @@ class NewUserForm extends React.Component {
             id="username"
             label="Username"
             className={classes.textField}
+            value={user.username}
             onChange={this.handleChange('username')}
             margin="normal"
           />
           <TextField
             id="email"
             label="Email"
+            value={user.email}
             onChange={this.handleChange('email')}
             className={classes.textField}
             margin="normal"
@@ -109,4 +125,9 @@ class NewUserForm extends React.Component {
   }
 }
 
-export default withRouter(withStyles(styles)(NewUserForm));
+
+export default compose(
+  withStyles(styles),
+  inject("userStore"),
+  mapRouteParamToProps('id', 'userId')
+)(AddEditUserForm);
