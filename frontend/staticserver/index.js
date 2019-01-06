@@ -22,6 +22,7 @@ if (enableHttps) {
   console.log('HTTPS enabled!');
 
   pem.createCSR({commonName: commonName}, function (err, opts) {
+    console.log(opts);
     pem.createCertificate({days: 7, selfSigned: true, csr: opts.csr}, function (err, opts) {
       if (err) {
         throw err
