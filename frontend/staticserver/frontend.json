@@ -2,7 +2,7 @@
   "apps" : [
     {
       "name": "frontend",
-      "script": ".restaurant/frontend/staticserver/index.js",
+      "script": "./index.js",
       "watch": true,
       "env": {
         "ENABLE_HTTPS": true
