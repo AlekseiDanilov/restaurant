@@ -54,6 +54,13 @@ export class BaseService<Entity extends Identifiable<string>> {
     .from(this.tableName());
   }
 
+  async listBy(param: object): Promise<Array<Entity>> {
+    return this.db.do()
+    .select('*')
+    .where(param)
+    .from(this.tableName());
+  }
+
   async delete(id: string): Promise<void> {
     return this.db.tx(trx => this.db
       .table(this.tableName())

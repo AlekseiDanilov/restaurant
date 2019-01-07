@@ -19,6 +19,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nest-middlewares/cookie-parser": "^5.1.1",
     "@nestjs/common": "^5.4.0",
     "@nestjs/core": "^5.4.0",
     "@nestjs/jwt": "^0.2.1",
@@ -32,9 +33,9 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.2.2",
+    "sha1": "^1.1.1",
     "typescript": "^3.0.1",
-    "uuid": "^3.3.2",
-    "@nest-middlewares/cookie-parser": "^5.1.1"
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@nestjs/testing": "^5.1.0",
