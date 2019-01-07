@@ -13,6 +13,7 @@ import {withStyles} from '@material-ui/core';
 import {inject, observer} from 'mobx-react';
 import {compose} from 'recompose';
 import withConfirmAction from "../../hoc/withConfirmAction";
+import withRoles from "../../hoc/withRoles";
 
 const styles = theme => ({
   button: {
@@ -28,6 +29,9 @@ const DeleteUserButton = withConfirmAction(({openConfirmDialog}) => {
     <DeleteIcon color="secondary"/>
   </Button>
 });
+
+const AccessTableCell = withRoles('Admin')(TableCell);
+const AccessButton = withRoles('Admin')(Button);
 
 class UserTable extends React.Component {
 
@@ -46,12 +50,12 @@ class UserTable extends React.Component {
               justify="center"
               direction="column">
           <Grid item>
-            <Button component={Link}
+            <AccessButton component={Link}
                     className={classes.button}
                     variant="contained"
                     color="primary" to="/config/users/new">
               Add user
-            </Button>
+            </AccessButton>
           </Grid>
           <Grid item>
             <Table className={classes.table}>
@@ -60,7 +64,7 @@ class UserTable extends React.Component {
                   <TableCell>Name</TableCell>
                   <TableCell>Username</TableCell>
                   <TableCell>Email</TableCell>
-                  <TableCell align="center">Action</TableCell>
+                  <AccessTableCell align="center">Action</AccessTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -70,7 +74,7 @@ class UserTable extends React.Component {
                       <TableCell align="left">{user.name}</TableCell>
                       <TableCell align="left">{user.username}</TableCell>
                       <TableCell align="left">{user.email}</TableCell>
-                      <TableCell align="center">
+                      <AccessTableCell align="center">
                         <Button component={Link} to={`/config/users/${user.id}`}>
                           <EditIcon color="primary"/>
                         </Button>
@@ -78,7 +82,7 @@ class UserTable extends React.Component {
                         <DeleteUserButton confirmText={`Do you confirm the deletion of user ${user.name}?`}
                                           confirmAction={() => userStore.deleteUser(user.id)}/>
                         }
-                      </TableCell>
+                      </AccessTableCell>
                     </TableRow>
                   );
                 })}

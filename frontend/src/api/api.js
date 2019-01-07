@@ -8,6 +8,7 @@ import redirecter from '../router/redirecter';
 class Api {
   client;
   user;
+  roles;
 
   constructor() {
     this.client = axios.create();
@@ -64,9 +65,12 @@ class Api {
       return null;
     }
     try {
-      const userBase64 = token.split(".")[1];
-      const userRow = Base64.decode(userBase64);
-      this.user = new UserModel(JSON.parse(userRow));
+      const payloadBase64 = token.split(".")[1];
+      const payloadRow = Base64.decode(payloadBase64);
+      const payload = JSON.parse(payloadRow);
+      const {user, roles} = payload;
+      this.user = new UserModel(user);
+      this.roles = roles || [];
     } catch (e) {
       this.user = null;
     }
