@@ -25,7 +25,7 @@ export class UserService extends BaseService<User> {
       name: dto.name,
       email: dto.email,
       username: dto.username,
-      passwordHash: CryptoHelper.md5(dto.password),
+      passwordHash: CryptoHelper.sha1(dto.password),
     };
     const newUser = await super.create(draftUser);
 
@@ -44,7 +44,7 @@ export class UserService extends BaseService<User> {
       name: dto.name,
       email: dto.email,
       username: dto.username,
-      passwordHash: dto.password ? CryptoHelper.md5(dto.password) : undefined,
+      passwordHash: dto.password ? CryptoHelper.sha1(dto.password) : undefined,
     };
     return super.update(updUser);
   }
