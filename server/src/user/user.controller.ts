@@ -5,6 +5,7 @@ import {CreateUpdateUserDto} from '../dto/create-update-user-dto';
 import Identifiable from "../base/identifiable";
 import {AuthGuard} from '@nestjs/passport';
 import RolesGuard from "../roles.guard";
+import {Roles} from "../role/roles";
 
 @Controller('api/user')
 @UseGuards(new (AuthGuard('jwt')))
@@ -31,13 +32,13 @@ export class UserController {
     return this.userService.findById(params.id);
   }
 
-  @UseGuards(RolesGuard)
+  @UseGuards(new RolesGuard([Roles.Admin]))
   @Put()
   async update(@Body() dto: CreateUpdateUserDto): Promise<User> {
     return this.userService.update(dto);
   }
 
-  @UseGuards(RolesGuard)
+  @UseGuards(new RolesGuard([Roles.Admin]))
   @Delete(':id')
   async delete(@Param() param: Identifiable<string>) {
     await this.userService.delete(param.id);
