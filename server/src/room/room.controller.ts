@@ -5,10 +5,11 @@ import Identifiable from "../base/identifiable";
 import {AuthGuard} from "@nestjs/passport";
 import {CreateRoomDto} from "../dto/create-room-dto";
 
-@Controller('room')
+@Controller('api/room')
 @UseGuards(new (AuthGuard('jwt')))
 export class RoomController {
-  private readonly roomService: RoomService;
+  constructor(private readonly roomService: RoomService) {
+  }
 
   @Post()
   async create(@Body() room: CreateRoomDto): Promise<Room> {

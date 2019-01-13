@@ -8,8 +8,8 @@ import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import PeopleIcon from '@material-ui/icons/People';
 import RoomIcon from '@material-ui/icons/MeetingRoom';
 import { Link, Route, Switch } from 'react-router-dom';
-import UsersPanel from './UsersPanel';
-import RoomsPanel from './RoomsPanel';
+import UsersPanel from './user/UsersPanel';
+import RoomsPanel from './room/RoomsPanel';
 import { withStyles } from '@material-ui/core';
 
 const styles = () => ({
@@ -44,7 +44,7 @@ class Configuration extends React.Component {
         <Grid item xs={10}>
           <Paper className={classes.right}>
             <Switch>
-              <Route path="/config" exact component={RoomsPanel}/>
+              <Route path="/config/" exact component={RoomsPanel}/>
               <Route path="/config/users" component={UsersPanel}/>
             </Switch>
           </Paper>

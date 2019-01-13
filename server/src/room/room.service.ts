@@ -16,7 +16,7 @@ export class RoomService extends BaseService<Room> {
       id: CryptoHelper.randomUuid(),
       name: dto.name,
       width: dto.width,
-      height: dto.height
+      length: dto.length
     });
   }
 }

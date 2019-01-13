@@ -4,7 +4,7 @@ exports.up = async function (knex, Promise) {
       t.string('id', 32).primary();
       t.text('name');
       t.integer('width');
-      t.integer('height');
+      t.integer('length');
     });
 };
 
