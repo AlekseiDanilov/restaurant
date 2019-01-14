@@ -44,7 +44,7 @@ class ToolbarMenu extends React.Component {
         <Grid item xs={3}>
           <Grid container justify="flex-end" spacing={8}>
             <Grid item>
-              <Tooltip title="Username" placement="left">
+              <Tooltip title={api.user.name} placement="left">
                 <IconButton color="inherit">
                   <AccountCircle/>
                 </IconButton>

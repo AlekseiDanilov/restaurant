@@ -1,8 +1,36 @@
 import { decorate, observable, action, computed } from 'mobx';
 import FurnitureModel from '../FurnitureModel';
+import api from '../../api/api';
 
 export default class RoomStore {
+
   furniture = [];
+  rooms = [];
+  load() {
+    api.client.get('/api/room')
+      .then(res => res.data)
+      .then(rooms => this.rooms = rooms);
+  }
+
+  findById(roomId) {
+    return api.client.get(`/api/room/${roomId}`)
+      .then(res => res.data);
+  }
+
+  save(room) {
+    return api.client.post("/api/room", room.toJS).then(res => res.data);
+  };
+
+  update(room) {
+    return api.client.put("/api/room", room)
+  };
+
+  remove(room) {
+    api.client.delete(`/api/room/${room.id}`)
+      .then(() => {
+        this.rooms.remove(room);
+      })
+  }
 
   constructor() {
     this.createDefaultCircleFurniture();
@@ -30,6 +58,7 @@ export default class RoomStore {
 
 decorate(RoomStore, {
   furniture: observable,
+  rooms: observable,
   createDefaultRectFurniture: action.bound,
   createDefaultCircleFurniture: action.bound,
   rectFurniture: computed,

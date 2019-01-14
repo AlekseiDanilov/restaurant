@@ -2,8 +2,6 @@ import {Body, Controller, Get, Post, Res, UseGuards} from '@nestjs/common';
 import {AuthService} from './auth.service';
 import {Credentials} from '../dto/credentials';
 import {AuthGuard} from "@nestjs/passport";
-import RolesGuard from "../roles.guard";
-import {Roles} from "../role/roles";
 
 @Controller('api/auth')
 export class AuthController {

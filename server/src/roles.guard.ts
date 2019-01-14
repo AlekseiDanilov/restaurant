@@ -5,7 +5,13 @@ import {Roles} from "./role/roles";
 @Injectable()
 export default class RolesGuard implements CanActivate {
 
-  constructor(private readonly roleService: RoleService) {}
+  private readonly roleService: RoleService;
+
+  private readonly accessRoles: Array<Roles>;
+
+  constructor(accessRoles: Array<Roles>) {
+    this.accessRoles = accessRoles;
+  }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -14,8 +20,7 @@ export default class RolesGuard implements CanActivate {
       const userRoles = await this.roleService.listBy({userId: user.id});
       return userRoles
         .map(r => r.role)
-        //TODO: refactor for list roles
-        .filter(r => [Roles.Admin].indexOf(r) !== -1)
+        .filter(r => this.accessRoles.indexOf(r) !== -1)
         .length > 0;
     }
     return false;

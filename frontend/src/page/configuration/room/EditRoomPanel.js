@@ -12,7 +12,7 @@ const styles = theme => ({
   },
 });
 
-class RoomsPanel extends React.Component {
+class EditRoomPanel extends React.Component {
   konva = React.createRef();
   state = {
     clientHeight: 0,
@@ -95,4 +95,4 @@ export default compose(
   withStyles(styles),
   inject('roomStore'),
   observer,
-)(RoomsPanel);
+)(EditRoomPanel);

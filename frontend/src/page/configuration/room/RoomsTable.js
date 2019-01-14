@@ -12,37 +12,31 @@ import EditIcon from '@material-ui/icons/Edit';
 import {withStyles} from '@material-ui/core';
 import {inject, observer} from 'mobx-react';
 import {compose} from 'recompose';
-import withConfirmAction from "../../hoc/withConfirmAction";
-import withRoles from "../../hoc/withRoles";
+import withConfirmAction from "../../../hoc/withConfirmAction";
+import NewRoomButton from "./NewRoomButton";
 
 const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit * 2
-  },
   table: {
     padding: theme.spacing.unit * 2
   }
 });
 
-const DeleteUserButton = withConfirmAction(({openConfirmDialog}) => {
+const DeleteButton = withConfirmAction(({openConfirmDialog}) => {
   return <Button onClick={openConfirmDialog}>
     <DeleteIcon color="secondary"/>
   </Button>
 });
 
-const AccessTableCell = withRoles('Admin')(TableCell);
-const AccessButton = withRoles('Admin')(Button);
-
-class UserTable extends React.Component {
+class RoomsTable extends React.Component {
 
   componentWillMount() {
-    const {userStore} = this.props;
-    userStore.load();
+    const {roomStore} = this.props;
+    roomStore.load();
   }
 
   render() {
-    const {classes, userStore} = this.props;
-    const {users} = userStore;
+    const {classes, roomStore} = this.props;
+    const {rooms} = roomStore;
     return (
       <React.Fragment>
         <Grid container
@@ -50,39 +44,32 @@ class UserTable extends React.Component {
               justify="center"
               direction="column">
           <Grid item>
-            <AccessButton component={Link}
-                    className={classes.button}
-                    variant="contained"
-                    color="primary" to="/config/users/new">
-              Add user
-            </AccessButton>
+            <NewRoomButton/>
           </Grid>
           <Grid item>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
-                  <TableCell>Username</TableCell>
-                  <TableCell>Email</TableCell>
-                  <AccessTableCell align="center">Action</AccessTableCell>
+                  <TableCell>Number of tables</TableCell>
+                  <TableCell>Number of seats</TableCell>
+                  <TableCell align="center">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map(user => {
+                {rooms.map(room => {
                   return (
-                    <TableRow key={user.id}>
-                      <TableCell align="left">{user.name}</TableCell>
-                      <TableCell align="left">{user.username}</TableCell>
-                      <TableCell align="left">{user.email}</TableCell>
-                      <AccessTableCell align="center">
-                        <Button component={Link} to={`/config/users/${user.id}`}>
+                    <TableRow key={room.id}>
+                      <TableCell align="left">{room.name}</TableCell>
+                      <TableCell align="left">{0}</TableCell>
+                      <TableCell align="left">{0}</TableCell>
+                      <TableCell align="center">
+                        <Button component={Link} to={`/config/rooms/${room.id}`}>
                           <EditIcon color="primary"/>
                         </Button>
-                        {userStore.canNotDeleteUser(user.id) &&
-                        <DeleteUserButton confirmText={`Do you confirm the deletion of user ${user.name}?`}
-                                          confirmAction={() => userStore.deleteUser(user.id)}/>
-                        }
-                      </AccessTableCell>
+                        <DeleteButton confirmText={`Do you confirm the deletion of room ${room.name}?`}
+                                          confirmAction={() => roomStore.remove(room)}/>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -97,6 +84,6 @@ class UserTable extends React.Component {
 
 export default compose(
   withStyles(styles),
-  inject('userStore'),
+  inject('roomStore'),
   observer
-)(UserTable);
+)(RoomsTable);

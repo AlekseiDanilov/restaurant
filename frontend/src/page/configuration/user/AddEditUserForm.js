@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button/Button';
 import {Link} from 'react-router-dom';
 import {compose} from 'recompose';
 import {inject} from 'mobx-react';
-import mapRouteParamToProps from "../../hoc/mapRouteParamToProps";
+import mapRouteParamToProps from "../../../hoc/mapRouteParamToProps";
 
 const styles = theme => ({
   container: {
