@@ -18,7 +18,7 @@ export default class RoomStore {
   }
 
   save(room) {
-    return api.client.post("/api/room", room).then(res => res.data);
+    return api.client.post("/api/room", room.toJS).then(res => res.data);
   };
 
   update(room) {

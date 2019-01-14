@@ -22,7 +22,9 @@ const withDialog = Dialog => WrappedComponent => {
       const {...props} = this.props;
       const {isOpen} = this.state;
       return <React.Fragment>
-        <Dialog isOpen={isOpen} handleClose={this.handleClose} {...props}/>
+        { isOpen &&
+          <Dialog isOpen={isOpen} handleClose={this.handleClose} {...props}/>
+        }
         <WrappedComponent openDialog={this.handleOpen} {...props}/>
       </React.Fragment>;
     }

@@ -16,6 +16,7 @@ export default class EnhancedDialog extends React.Component {
     handleSubmit: PropTypes.func,
     fullWidth: PropTypes.bool,
     maxWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+    disabledSubmit: PropTypes.bool
   };
 
   static defaultProps = {
@@ -26,7 +27,8 @@ export default class EnhancedDialog extends React.Component {
     handleSubmit: () => {
     },
     fullWidth: false,
-    maxWidth: 'sm'
+    maxWidth: 'sm',
+    disabledSubmit: false
   };
 
   render() {
@@ -40,6 +42,7 @@ export default class EnhancedDialog extends React.Component {
       handleSubmit,
       fullWidth,
       maxWidth,
+      disabledSubmit
     } = this.props;
 
     return <React.Fragment>
@@ -52,11 +55,11 @@ export default class EnhancedDialog extends React.Component {
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="contained">
-            {cancelBtnTitle}
-          </Button>
-          <Button onClick={handleSubmit} color="secondary" variant="contained">
+          <Button disabled={disabledSubmit} onClick={handleSubmit} color="primary" variant="contained">
             {submitBtnTitle}
+          </Button>
+          <Button onClick={handleClose} color="secondary" variant="contained">
+            {cancelBtnTitle}
           </Button>
         </DialogActions>
       </Dialog>

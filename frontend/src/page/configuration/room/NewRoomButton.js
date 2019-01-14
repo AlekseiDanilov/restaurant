@@ -42,11 +42,12 @@ class NewRoomDialog extends React.Component {
                       handleClose={handleClose}
                       submitBtnTitle="Create"
                       handleSubmit={() => {
-                        roomStore.save(this.model.toJS).then(room => {
+                        roomStore.save(this.model).then(room => {
                           roomStore.rooms.push(room);
                           handleClose();
                         });
                       }}
+                      disabledSubmit={this.model.hasError}
                       fullWidth
       >
         <TextField

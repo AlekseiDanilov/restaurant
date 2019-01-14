@@ -1,5 +1,6 @@
 import {computed, decorate, observable} from 'mobx';
 import TextFieldModel from "./form/TextFieldModel";
+import {positiveInt} from "../validator";
 
 export default class RoomModel {
   id;
@@ -20,9 +21,21 @@ export default class RoomModel {
       this.length = json.length;
     }
 
-    this.nameField = new TextFieldModel(this, "name").withLabel("Name");
-    this.widthField = new TextFieldModel(this, "width").withLabel("Width");
-    this.lengthField = new TextFieldModel(this, "length").withLabel("Length");
+    this.nameField = new TextFieldModel(this, "name")
+      .withLabel("Name")
+      .withRequired();
+    this.widthField = new TextFieldModel(this, "width")
+      .withLabel("Width")
+      .withRequired()
+      .withValidator(positiveInt);
+    this.lengthField = new TextFieldModel(this, "length")
+      .withLabel("Length")
+      .withRequired()
+      .withValidator(positiveInt);
+  }
+
+  get hasError() {
+    return !!(this.lengthField.error || this.widthField.error || this.nameField.error)
   }
 
   get toJS() {
@@ -43,6 +56,7 @@ decorate(RoomModel, {
   nameField: observable.ref,
   widthField: observable.ref,
   lengthField: observable.ref,
+  hasError: computed,
   toJS: computed
 });
 
