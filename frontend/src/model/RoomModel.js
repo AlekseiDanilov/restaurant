@@ -1,5 +1,5 @@
 import {computed, decorate, observable} from 'mobx';
-import TextFieldModel from "./form/TextFieldModel";
+import FormBuilder from "./form/FormBuilder";
 import {positiveInt} from "../validator";
 
 export default class RoomModel {
@@ -9,9 +9,7 @@ export default class RoomModel {
   width;
   length;
 
-  nameField = null;
-  widthField = null;
-  lengthField = null;
+  form = null;
 
   constructor(json) {
     if (json) {
@@ -21,21 +19,10 @@ export default class RoomModel {
       this.length = json.length;
     }
 
-    this.nameField = new TextFieldModel(this, "name")
-      .withLabel("Name")
-      .withRequired();
-    this.widthField = new TextFieldModel(this, "width")
-      .withLabel("Width")
-      .withRequired()
-      .withValidator(positiveInt);
-    this.lengthField = new TextFieldModel(this, "length")
-      .withLabel("Length")
-      .withRequired()
-      .withValidator(positiveInt);
-  }
-
-  get hasError() {
-    return !!(this.lengthField.error || this.widthField.error || this.nameField.error)
+    this.form = new FormBuilder(this)
+      .text("name", f => f.withLabel("Name").required())
+      .text("width", f => f.withLabel("Width").required().withValidator(positiveInt))
+      .text("length", f => f.withLabel("Length").required().withValidator(positiveInt));
   }
 
   get toJS() {
@@ -53,10 +40,7 @@ decorate(RoomModel, {
   name: observable,
   width: observable,
   length: observable,
-  nameField: observable.ref,
-  widthField: observable.ref,
-  lengthField: observable.ref,
-  hasError: computed,
+  formBuilder: observable.ref,
   toJS: computed
 });
 

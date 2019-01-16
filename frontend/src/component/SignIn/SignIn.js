@@ -23,7 +23,8 @@ class SignIn extends React.Component {
     });
   };
 
-  handleLogin = () => {
+  handleLogin = e => {
+    e.preventDefault();
     const {password, username} = this.state;
     api.login(username, password).then(user => {
       if (!user) {
@@ -44,7 +45,7 @@ class SignIn extends React.Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form}>
+          <form className={classes.form} onSubmit={this.handleLogin}>
             <FormControl margin="normal" fullWidth>
               {error &&
               <Chip color='secondary'
@@ -72,7 +73,7 @@ class SignIn extends React.Component {
               />
             </FormControl>
             <Button
-              onClick={this.handleLogin}
+              type="submit"
               variant="contained"
               color="primary"
               className={classes.submit}

@@ -47,21 +47,21 @@ class NewRoomDialog extends React.Component {
                           handleClose();
                         });
                       }}
-                      disabledSubmit={this.model.hasError}
+                      disabledSubmit={this.model.form.hasError}
                       fullWidth
       >
         <TextField
-          model={this.model.nameField}
+          model={this.model.form.fields.name}
           margin="normal"
           fullWidth
         />
         <TextField
-          model={this.model.widthField}
+          model={this.model.form.fields.width}
           margin="normal"
           fullWidth
         />
         <TextField
-          model={this.model.lengthField}
+          model={this.model.form.fields.length}
           margin="normal"
           fullWidth
         />

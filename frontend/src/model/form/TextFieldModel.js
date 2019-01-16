@@ -16,7 +16,7 @@ export default class TextFieldModel {
     this.model[this.fieldName] = e.target.value;
   }
 
-  withRequired() {
+  required() {
     this.validators.push(required);
     return this;
   }
