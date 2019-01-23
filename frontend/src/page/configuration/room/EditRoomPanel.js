@@ -1,98 +1,110 @@
 import React from 'react';
 
-import { Stage, Layer, Rect, Circle, Text, Line } from 'react-konva';
-import { withStyles } from '@material-ui/core';
-import { compose } from 'recompose';
-import { inject, observer } from 'mobx-react';
+import {Group, Layer, Path, Stage} from 'react-konva';
+import {withStyles} from '@material-ui/core';
+import {compose} from 'recompose';
+import {inject, observer} from 'mobx-react';
+import Paper from "@material-ui/core/Paper/Paper";
+import mapRouteParamToProps from "../../../hoc/mapRouteParamToProps";
 
 const styles = theme => ({
   konva: {
     height: '80vh',
-    background: '#80808030',
   },
 });
 
 class EditRoomPanel extends React.Component {
   konva = React.createRef();
-  state = {
-    clientHeight: 0,
-    clientWidth: 0,
+  roomElement = React.createRef();
+
+  updateDimensions = () => {
+    const {roomStore} = this.props;
+    const {currentRoom} = roomStore;
+    const clientHeight = document.body.clientHeight - 100;
+    const {clientWidth} = this.roomElement.current;
+    currentRoom.setDimensions(clientWidth, clientHeight);
   };
 
   componentDidMount() {
-    const {
-      clientHeight,
-      clientWidth,
-    } = this.konva.current.getAttrs().container;
+    const {roomStore, currentRoomId} = this.props;
+    roomStore.loadCurrentRoom(currentRoomId).then(() => {
+      if (roomStore.currentRoom) {
+        this.updateDimensions();
+        window.addEventListener("resize", this.updateDimensions);
+      }
+    });
+  }
 
-    this.setState({ clientHeight, clientWidth });
+  componentWillUnmount() {
+    const {roomStore} = this.props;
+    if (roomStore.currentRoom) {
+      window.removeEventListener("resize", this.updateDimensions);
+    }
+    console.log('unmount')
   }
 
   render() {
-    const { clientHeight, clientWidth } = this.state;
-    const { classes, roomStore } = this.props;
-    const { rectFurniture, circleFurniture } = roomStore;
+    const {classes, roomStore} = this.props;
+    const {currentRoom} = roomStore;
+
+    if (!currentRoom) {
+      return <div ref={this.roomElement}/>;
+    }
+
     return (
-      <Stage ref={this.konva}
-             width={clientWidth}
-             height={clientHeight}
-             className={classes.konva}>
-        <Layer>
-          <Text text="Big rect" x={50} y={15} fontSize={15}/>
-          <Text text="Small rect" x={150} y={15} fontSize={15}/>
-          <Text text="Big circle" x={245} y={15} fontSize={15}/>
-          <Text text="Small circle" x={320} y={15} fontSize={15}/>
-          <Line
-            x={10}
-            y={130}
-            points={[0, 3, 400, 3]}
-            stroke="black"
-            strokeWidth={2}
-          />
-          {rectFurniture.map((r, idx) => {
-            return <Rect
-              key={idx}
-              x={r.x}
-              y={r.y}
-              width={r.width}
-              height={r.height}
-              fill={r.color}
-              draggable
-              //shadowBlur={3}
-              onDragStart={() => {
-                if (r.color === 'brown') {
-                  r.color = 'green';
-                  roomStore.createDefaultRectFurniture();
-                }
-              }}
-            />;
-          })}
-          {circleFurniture.map((c, idx) => {
-            return <Circle
-              key={idx}
-              x={c.x}
-              y={c.y}
-              width={c.width}
-              height={c.height}
-              fill={c.color}
-              draggable
-              //shadowBlur={3}
-              onDragStart={() => {
-                if (c.color === 'brown') {
-                  c.color = 'green';
-                  roomStore.createDefaultCircleFurniture();
-                }
-              }}
-            />;
-          })}
-        </Layer>
-      </Stage>
+      <div ref={this.roomElement}>
+        <Paper style={{
+          height: currentRoom.clientHeight,
+          width: currentRoom.clientWidth,
+          marginLeft: currentRoom.marginLeft
+        }}>
+          <Stage ref={this.konva}
+                 width={currentRoom.clientWidth}
+                 height={currentRoom.clientHeight}
+                 className={classes.konva}>
+            <Layer>{ currentRoom.furniture.map((f, key) => (
+              <Group key={key}
+                     draggable
+                     scaleX={f.scale}
+                     scaleY={f.scale}
+                     offsetX={f.offsetX}
+                     offsetY={f.offsetY}
+                     x={f.x}
+                     y={f.y}
+                     onDblClick={() => currentRoom.removeFurniture(f)}
+                     onDragEnd={e => {
+                       const {x, y} = e.target.getPosition();
+                       const newX = Math.max(0, Math.min(x, currentRoom.clientWidth - f.width));
+                       const newY = Math.max(0, Math.min(y, currentRoom.clientHeight - f.height));
+                       f.setPosition(newX, newY);
+                     }}
+                     dragBoundFunc={position => {
+                       return ({
+                         x: Math.max(0, Math.min(position.x, currentRoom.clientWidth - f.width)),
+                         y: Math.max(0, Math.min(position.y, currentRoom.clientHeight - f.height))
+                       })
+                     }}>
+                <Path
+                  x={f.x}
+                  y={f.y}
+                  data={f.pathData}
+                  fill='yellow'
+                />
+                {f.chairs.map(c =>
+                  <Path key={c.key} x={c.x} y={c.y} data={c.data} fill='brown'/>
+                )}
+              </Group>
+            ))}</Layer>
+          </Stage>
+        </Paper>
+      </div>
     );
   }
 }
 
 export default compose(
   withStyles(styles),
+  mapRouteParamToProps('id', 'currentRoomId'),
   inject('roomStore'),
   observer,
 )(EditRoomPanel);

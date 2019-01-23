@@ -8,6 +8,7 @@ import withDialog from "../../../hoc/withDialog";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "../../../component/form/TextField";
 import RoomModel from "../../../model/RoomModel";
+import redirecter from "../../../router/redirecter";
 
 const styles = theme => ({
   button: {
@@ -45,6 +46,7 @@ class NewRoomDialog extends React.Component {
                         roomStore.save(this.model).then(room => {
                           roomStore.rooms.push(room);
                           handleClose();
+                          redirecter.to(`/config/rooms/${room.id}`)
                         });
                       }}
                       disabledSubmit={this.model.form.hasError}

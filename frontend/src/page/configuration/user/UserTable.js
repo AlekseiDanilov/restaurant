@@ -14,6 +14,7 @@ import {inject, observer} from 'mobx-react';
 import {compose} from 'recompose';
 import withConfirmAction from "../../../hoc/withConfirmAction";
 import withRoles from "../../../hoc/withRoles";
+import Paper from "@material-ui/core/Paper/Paper";
 
 const styles = theme => ({
   button: {
@@ -44,7 +45,7 @@ class UserTable extends React.Component {
     const {classes, userStore} = this.props;
     const {users} = userStore;
     return (
-      <React.Fragment>
+      <Paper>
         <Grid container
               alignItems="stretch"
               justify="center"
@@ -90,7 +91,7 @@ class UserTable extends React.Component {
             </Table>
           </Grid>
         </Grid>
-      </React.Fragment>
+      </Paper>
     );
   }
 }
