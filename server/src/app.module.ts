@@ -7,10 +7,11 @@ import { AuthModule } from './auth/auth.module';
 import { BaseModule } from './base/base.module';
 import { RoleModule } from './role/role.module';
 import { RoomModule } from './room/room.module';
+import { FurnitureService } from './room/furniture.service';
 
 @Module({
   imports: [UserModule, Db, AuthModule, BaseModule, RoleModule, RoomModule],
   controllers: [AppController],
-  providers: [AppService, Db, AuthModule],
+  providers: [AppService, Db, AuthModule, FurnitureService],
 })
 export class AppModule {}

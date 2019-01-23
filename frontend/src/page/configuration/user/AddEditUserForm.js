@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import {compose} from 'recompose';
 import {inject} from 'mobx-react';
 import mapRouteParamToProps from "../../../hoc/mapRouteParamToProps";
+import Paper from "@material-ui/core/Paper/Paper";
 
 const styles = theme => ({
   container: {
@@ -65,7 +66,7 @@ class AddEditUserForm extends React.Component {
     const {classes} = this.props;
     const user = this.state;
     return (
-      <div>
+      <Paper>
         <form className={classes.container} autoComplete="off">
           <TextField
             id="name"
@@ -120,7 +121,7 @@ class AddEditUserForm extends React.Component {
                 to="/config/users">
           Cancel
         </Button>
-      </div>
+      </Paper>
     );
   }
 }

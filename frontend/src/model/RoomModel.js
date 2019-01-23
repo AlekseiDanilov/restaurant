@@ -1,6 +1,7 @@
-import {computed, decorate, observable} from 'mobx';
+import {action, computed, decorate, observable} from 'mobx';
 import FormBuilder from "./form/FormBuilder";
 import {positiveInt} from "../validator";
+import FurnitureModel from "./FurnitureModel";
 
 export default class RoomModel {
   id;
@@ -8,6 +9,13 @@ export default class RoomModel {
   name;
   width;
   length;
+
+  clientWidth = 1;
+  clientHeight = 1;
+  marginLeft = 0;
+
+  meterUnit = observable.box(1);
+  furniture = [];
 
   form = null;
 
@@ -17,6 +25,7 @@ export default class RoomModel {
       this.name = json.name;
       this.width = json.width;
       this.length = json.length;
+      this.furniture = json.furniture.map(f => new FurnitureModel(this.meterUnit, f))
     }
 
     this.form = new FormBuilder(this)
@@ -25,12 +34,33 @@ export default class RoomModel {
       .text("length", f => f.withLabel("Length").required().withValidator(positiveInt));
   }
 
+  setDimensions(clientWidth, clientHeight) {
+    const meterUnit = Math.min(clientWidth / this.width, clientHeight / this.length);
+    this.clientHeight = meterUnit * this.length;
+    this.clientWidth = meterUnit * this.width;
+    this.marginLeft = Math.abs(clientWidth - this.clientWidth) / 2;
+    this.meterUnit.set(meterUnit.toFixed(4));
+  }
+
+  addFurniture(kind) {
+    this.furniture.push(new FurnitureModel(this.meterUnit, {
+      kind,
+      x: 0,
+      y: 0
+    }))
+  }
+
+  removeFurniture(frnt) {
+    this.furniture.remove(frnt);
+  }
+
   get toJS() {
     return {
       id: this.id,
       name: this.name,
       width: this.width,
-      length: this.length
+      length: this.length,
+      furniture: this.furniture.map(f => f.toJS)
     }
   }
 }
@@ -41,6 +71,14 @@ decorate(RoomModel, {
   width: observable,
   length: observable,
   formBuilder: observable.ref,
+  furniture: observable,
+  clientWidth: observable,
+  clientHeight: observable,
+  marginLeft: observable,
+  loadFurniture: action.bound,
+  addFurniture: action.bound,
+  removeFurniture: action.bound,
+  setDimensions: action.bound,
   toJS: computed
 });
 

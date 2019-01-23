@@ -14,6 +14,7 @@ import {inject, observer} from 'mobx-react';
 import {compose} from 'recompose';
 import withConfirmAction from "../../../hoc/withConfirmAction";
 import NewRoomButton from "./NewRoomButton";
+import Paper from "@material-ui/core/Paper/Paper";
 
 const styles = theme => ({
   table: {
@@ -38,7 +39,7 @@ class RoomsTable extends React.Component {
     const {classes, roomStore} = this.props;
     const {rooms} = roomStore;
     return (
-      <React.Fragment>
+      <Paper>
         <Grid container
               alignItems="stretch"
               justify="center"
@@ -77,7 +78,7 @@ class RoomsTable extends React.Component {
             </Table>
           </Grid>
         </Grid>
-      </React.Fragment>
+      </Paper>
     );
   }
 }
