@@ -8,10 +8,8 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/AddBox';
-import SaveIcon from '@material-ui/icons/SaveOutlined';
 import tileData from './tileData';
 import mapRouteParamToProps from "../../../hoc/mapRouteParamToProps";
-import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 
 const styles = theme => ({
   root: {
@@ -48,16 +46,6 @@ class FurniturePanel extends React.Component {
     return (
       <div className={classes.root}>
         <GridList className={classes.gridList} cols={1}>
-          <GridListTile key="Save" cols={1} style={{height: 'auto'}}>
-            <ListSubheader component="div">
-              <IconButton color="primary" onClick={() => {
-                roomStore.update(currentRoom)
-              }}>
-                <SaveIcon/>
-              </IconButton>
-              {currentRoom.name}
-            </ListSubheader>
-          </GridListTile>
           {tileData.map(tile => (
             <GridListTile key={tile.img} style={{width: tile.width, height: tile.height}}>
               <img src={tile.img} alt={tile.title}/>

@@ -5,7 +5,7 @@ import Identifiable from "../base/identifiable";
 import {AuthGuard} from "@nestjs/passport";
 import {CreateRoomDto} from "../dto/create-room-dto";
 import {FurnitureService} from "./furniture.service";
-import {UpdateRoomDto} from "../dto/update-room-dto";
+import {RoomDto} from "../dto/room-dto";
 import {CryptoHelper} from "../helper/cryptoHelper";
 
 @Controller('api/room')
@@ -22,11 +22,11 @@ export class RoomController {
 
   @Get()
   async list(): Promise<Array<Room>> {
-    return this.roomService.list();
+    return this.roomService.listForTable();
   }
 
   @Get(':id')
-  async find(@Param() params): Promise<Object> {
+  async find(@Param() params): Promise<RoomDto> {
     const room = await this.roomService.findById(params.id);
     const furniture = await this.furnitureService.listBy({roomId: room.id});
     return {
@@ -36,10 +36,9 @@ export class RoomController {
   }
 
   @Put()
-  async update(@Body() param: UpdateRoomDto): Promise<Room> {
+  async update(@Body() param: RoomDto): Promise<Room> {
     const {furniture, ...room} = param;
-    const old = await this.furnitureService.listBy({roomId: room.id});
-    await old.forEach((o) => this.furnitureService.delete(o.id));
+    await this.furnitureService.deleteBy({roomId: room.id});
     await furniture.forEach(f => {
       this.furnitureService.create({
         id: CryptoHelper.randomUuid(),
@@ -52,6 +51,7 @@ export class RoomController {
 
   @Delete(':id')
   async delete(@Param() param: Identifiable<string>) {
+    await this.furnitureService.deleteBy({roomId: param.id});
     await this.roomService.delete(param.id);
     return HttpStatus.OK;
   }

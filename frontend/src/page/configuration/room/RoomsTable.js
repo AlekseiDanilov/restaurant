@@ -52,6 +52,7 @@ class RoomsTable extends React.Component {
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
+                  <TableCell>Size (Width x Length)</TableCell>
                   <TableCell>Number of tables</TableCell>
                   <TableCell>Number of seats</TableCell>
                   <TableCell align="center">Actions</TableCell>
@@ -62,8 +63,9 @@ class RoomsTable extends React.Component {
                   return (
                     <TableRow key={room.id}>
                       <TableCell align="left">{room.name}</TableCell>
-                      <TableCell align="left">{0}</TableCell>
-                      <TableCell align="left">{0}</TableCell>
+                      <TableCell align="left">{`${room.width} x ${room.length}`}</TableCell>
+                      <TableCell align="left">{room.numberOfTables}</TableCell>
+                      <TableCell align="left">{room.numberOfSeats}</TableCell>
                       <TableCell align="center">
                         <Button component={Link} to={`/config/rooms/${room.id}`}>
                           <EditIcon color="primary"/>

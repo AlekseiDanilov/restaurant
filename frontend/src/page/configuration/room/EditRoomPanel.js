@@ -1,11 +1,13 @@
 import React from 'react';
-
 import {Group, Layer, Path, Stage} from 'react-konva';
 import {withStyles} from '@material-ui/core';
 import {compose} from 'recompose';
 import {inject, observer} from 'mobx-react';
 import Paper from "@material-ui/core/Paper/Paper";
 import mapRouteParamToProps from "../../../hoc/mapRouteParamToProps";
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import SaveIcon from '@material-ui/icons/SaveOutlined';
 
 const styles = theme => ({
   konva: {
@@ -40,7 +42,6 @@ class EditRoomPanel extends React.Component {
     if (roomStore.currentRoom) {
       window.removeEventListener("resize", this.updateDimensions);
     }
-    console.log('unmount')
   }
 
   render() {
@@ -62,7 +63,7 @@ class EditRoomPanel extends React.Component {
                  width={currentRoom.clientWidth}
                  height={currentRoom.clientHeight}
                  className={classes.konva}>
-            <Layer>{ currentRoom.furniture.map((f, key) => (
+            <Layer>{currentRoom.furniture.map((f, key) => (
               <Group key={key}
                      draggable
                      scaleX={f.scale}
@@ -97,6 +98,18 @@ class EditRoomPanel extends React.Component {
             ))}</Layer>
           </Stage>
         </Paper>
+        <Snackbar
+          anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+          open={true}
+          message={currentRoom.name}
+          action={[
+            <IconButton color="inherit" onClick={() => {
+              roomStore.update(currentRoom)
+            }}>
+              <SaveIcon/>
+            </IconButton>
+          ]}
+        />
       </div>
     );
   }

@@ -69,4 +69,13 @@ export class BaseService<Entity extends Identifiable<string>> {
       .transacting(trx)
     );
   }
+
+  async deleteBy(param: object): Promise<void> {
+    return this.db.tx(trx => this.db
+      .table(this.tableName())
+      .where(param)
+      .del()
+      .transacting(trx)
+    );
+  }
 }

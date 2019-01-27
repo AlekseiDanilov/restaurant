@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton/IconButton';
 import Grid from '@material-ui/core/Grid/Grid';
 import api from "../../api/api";
 import Tooltip from "@material-ui/core/es/Tooltip/Tooltip";
+import TabMenu from "./TabMenu";
 
 class ToolbarMenu extends React.Component {
 
@@ -38,7 +39,11 @@ class ToolbarMenu extends React.Component {
             <Tab label="Reservations" component={Link} to="/"/>
             <Tab label="Daily plan" component={Link} to="/daily"/>
             <Tab label="Search" component={Link} to="/search"/>
-            <Tab label="Configuration" component={Link} to="/config"/>
+            <TabMenu label="Configuration" config={[
+              {title: "Restaurant", link: "/config", icon: null},
+              {title: "Rooms", link: "/config/rooms", icon: null},
+              {title: "Users", link: "/config/users", icon: null}
+            ]}/>
           </Tabs>
         </Grid>
         <Grid item xs={3}>
