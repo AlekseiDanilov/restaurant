@@ -7,15 +7,15 @@ class RoomConstructor extends React.Component {
   render() {
     return (
       <Grid container
-            alignItems="flex-start"
-            spacing={8}
+            direction="row"
             justify="center"
-            direction="row">
-        <Grid item xs={10}>
-          <EditRoomPanel/>
-        </Grid>
-        <Grid item xs={2}>
+            alignItems="center"
+            spacing={8}>
+        <Grid item>
           <FurniturePanel/>
+        </Grid>
+        <Grid item xs={12}>
+          <EditRoomPanel/>
         </Grid>
       </Grid>
     );
