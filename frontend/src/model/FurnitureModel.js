@@ -4,6 +4,7 @@ import {furnitureType} from "./furnitureData";
 export default class FurnitureModel {
   id;
   kind = 'circle4';
+  number;
   xMeter = 1;
   yMeter = 1;
 
@@ -13,6 +14,7 @@ export default class FurnitureModel {
     this.meterUnit = meterUnit;
     if (json) {
       this.kind = json.kind;
+      this.number = json.number;
       this.xMeter = json.x;
       this.yMeter = json.y;
     }
@@ -71,6 +73,7 @@ export default class FurnitureModel {
   get toJS() {
     return {
       kind: this.kind,
+      number: this.number,
       x: this.xMeter,
       y: this.yMeter,
       numberSeats: this.chairs.length
@@ -80,6 +83,7 @@ export default class FurnitureModel {
 
 decorate(FurnitureModel, {
   kind: observable,
+  number: observable,
   xMeter: observable,
   yMeter: observable,
   x: computed,

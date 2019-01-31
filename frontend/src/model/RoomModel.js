@@ -17,6 +17,8 @@ export default class RoomModel {
   meterUnit = observable.box(1);
   furniture = [];
 
+  hasCollision = false;
+
   form = null;
 
   constructor(json) {
@@ -42,16 +44,36 @@ export default class RoomModel {
     this.meterUnit.set(meterUnit.toFixed(4));
   }
 
-  addFurniture(kind) {
+  addFurniture(kind, x = 0, y = 0) {
     this.furniture.push(new FurnitureModel(this.meterUnit, {
       kind,
-      x: 0,
-      y: 0
+      x: x,
+      y: y,
+      number: this.nextFurnitureNumber
     }))
   }
 
   removeFurniture(frnt) {
     this.furniture.remove(frnt);
+  }
+
+  get isValidNumbers() {
+    const hasEmpty = !!this.furniture.find(f => !f);
+    const hasNonUnique = !!this.furniture
+      .find(f => this.furniture.find(ff => f.number === ff.number && f !== ff));
+
+    return hasEmpty || hasNonUnique;
+  }
+
+  get nextFurnitureNumber() {
+
+    const maxNumber = Math.max(
+      ...this.furniture.map(f => f.number)
+        .map(n => Number(n))
+        .filter(n => !isNaN(n))
+    );
+
+    return !!maxNumber && this.furniture.length > 0 ? maxNumber + 1 : 1;
   }
 
   get toJS() {
@@ -75,10 +97,12 @@ decorate(RoomModel, {
   clientWidth: observable,
   clientHeight: observable,
   marginLeft: observable,
+  hasCollision: observable,
   loadFurniture: action.bound,
   addFurniture: action.bound,
   removeFurniture: action.bound,
   setDimensions: action.bound,
+  isValidNumbers: computed,
+  nextFurnitureNumber: computed,
   toJS: computed
 });
-

@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/AddBox';
 import tileData from './tileData';
 import mapRouteParamToProps from "../../../hoc/mapRouteParamToProps";
+import Paper from "@material-ui/core/es/Paper/Paper";
 
 const styles = theme => ({
   root: {
@@ -17,18 +18,17 @@ const styles = theme => ({
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-around',
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   gridList: {
-    //flexWrap: 'nowrap'
+    flexWrap: 'nowrap',
     justifyContent: 'center'
   },
-  title: {
-    color: theme.palette.common.white
+
+  tile: {
+    cursor: 'grab',
   },
-  icon: {
-    color: theme.palette.common.white
-  },
+
   titleBar: {
     height: 25
   },
@@ -44,26 +44,35 @@ class FurniturePanel extends React.Component {
       return null;
     }
     return (
-      <div className={classes.root}>
+      <Paper className={classes.root}>
         <GridList className={classes.gridList} cols={1}>
           {tileData.map(tile => (
             <GridListTile key={tile.img} style={{width: tile.width, height: tile.height}}>
-              <img src={tile.img} alt={tile.title}/>
               <GridListTileBar
                 title={tile.title}
                 className={classes.titleBar}
                 actionIcon={
-                  <IconButton className={classes.icon} onClick={() => {
+                  <IconButton color="inherit" onClick={() => {
                     currentRoom.addFurniture(tile.kind);
                   }}>
-                    <AddIcon/>
+                    <AddIcon color="inherit"/>
                   </IconButton>
                 }
               />
+              <img src={tile.img}
+                   draggable={true}
+                   className={classes.tile}
+                   onDragStart={e => {
+                     const {offsetX, offsetY} = e.nativeEvent;
+                     e.dataTransfer.setData("kind", tile.kind);
+                     e.dataTransfer.setData("offsetX", offsetX);
+                     e.dataTransfer.setData("offsetY", offsetY);
+                   }}
+                   alt={tile.title}/>
             </GridListTile>
           ))}
         </GridList>
-      </div>
+      </Paper>
     );
   }
 }

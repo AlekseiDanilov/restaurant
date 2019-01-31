@@ -1,11 +1,17 @@
 import {decorate, observable, action} from 'mobx';
 import api from '../../api/api';
 import RoomModel from "../RoomModel";
+import FurnitureContextMenuModel from "../FurnitureContextMenuModel";
 
 export default class RoomStore {
 
   rooms = [];
   currentRoom;
+  furnitureContextMenuModel;
+
+  constructor() {
+    this.furnitureContextMenuModel = new FurnitureContextMenuModel(this);
+  }
 
   load() {
     api.client.get('/api/room')
@@ -37,5 +43,6 @@ export default class RoomStore {
 decorate(RoomStore, {
   rooms: observable,
   loadCurrentRoom: action.bound,
-  currentRoom: observable
+  currentRoom: observable,
+  furnitureContextMenuModel: observable
 });
