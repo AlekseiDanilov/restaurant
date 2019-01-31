@@ -42,7 +42,7 @@ class Search extends React.Component {
               />
               <TextField
                 id="date"
-                label="Birthday"
+                label="Date"
                 type="date"
                 fullWidth
                 className={classes.textField}
