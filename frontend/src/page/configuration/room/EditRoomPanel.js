@@ -148,7 +148,7 @@ class EditRoomPanel extends React.Component {
         <Snackbar
           anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
 
-          open={currentRoom.hasCollision || currentRoom.isValidNumbers}>
+          open={currentRoom.hasCollision || currentRoom.isErrorNumbers}>
           <SnackbarContent
             className={classes.warning}
             message="Arrange the furniture without collisions and assign a unique number for each"
@@ -160,7 +160,10 @@ class EditRoomPanel extends React.Component {
           message={currentRoom.name}
           className={classes.snackbar}
           action={[
-            <IconButton key='save' color="inherit" disabled={currentRoom.hasCollision} onClick={() => {
+            <IconButton key='save'
+                        color="inherit"
+                        disabled={currentRoom.hasCollision || currentRoom.isErrorNumbers}
+                        onClick={() => {
               roomStore.update(currentRoom)
             }}>
               <SaveIcon/>

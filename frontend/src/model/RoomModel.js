@@ -57,7 +57,7 @@ export default class RoomModel {
     this.furniture.remove(frnt);
   }
 
-  get isValidNumbers() {
+  get isErrorNumbers() {
     const hasEmpty = !!this.furniture.find(f => !f);
     const hasNonUnique = !!this.furniture
       .find(f => this.furniture.find(ff => f.number === ff.number && f !== ff));
@@ -102,7 +102,7 @@ decorate(RoomModel, {
   addFurniture: action.bound,
   removeFurniture: action.bound,
   setDimensions: action.bound,
-  isValidNumbers: computed,
+  isErrorNumbers: computed,
   nextFurnitureNumber: computed,
   toJS: computed
 });
