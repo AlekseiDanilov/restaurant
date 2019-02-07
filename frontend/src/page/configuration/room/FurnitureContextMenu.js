@@ -30,7 +30,8 @@ class FurnitureContextMenu extends React.Component {
         anchorReference="anchorPosition"
         anchorPosition={{top, left}}
       >
-        <ClickAwayListener onClickAway={close}>
+        <ClickAwayListener onClickAway={close}
+                           mouseEvent="onMouseDown">
           <Paper>
           <MenuList>
             <MenuItem className={classes.menuItem}
