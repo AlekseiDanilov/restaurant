@@ -16,6 +16,8 @@ const styles = theme => ({
   }
 });
 
+const preventDefault = e => e.preventDefault();
+
 class FurnitureContextMenu extends React.Component {
   render() {
     const {classes, roomStore, openDialog} = this.props;
@@ -31,7 +33,8 @@ class FurnitureContextMenu extends React.Component {
         anchorPosition={{top, left}}
       >
         <ClickAwayListener onClickAway={close}
-                           mouseEvent="onMouseDown">
+                           mouseEvent="onMouseDown"
+                           onContextMenu={preventDefault}>
           <Paper>
           <MenuList>
             <MenuItem className={classes.menuItem}
