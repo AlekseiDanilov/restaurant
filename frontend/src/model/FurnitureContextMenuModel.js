@@ -15,15 +15,30 @@ export default class FurnitureContextMenuModel {
   close(e) {
     e.preventDefault();
     this.isOpen = false;
+    return true;
   };
 
   open(f) {
     return action(({evt}) => {
       evt.preventDefault();
+      evt.stopPropagation();
       const {clientX, clientY} = evt;
       this.furniture = f;
       this.left = clientX;
       this.top = clientY;
+      this.isOpen = true;
+      return true;
+    });
+  }
+
+  openByTouch(f, pX, pY) {
+    return action((e) => {
+      const {currentTarget: target} = e;
+      //alert(JSON.stringify(e));
+      const {x: clientX, y: clientY} = target.getAttrs();
+      this.furniture = f;
+      this.left = clientX + pX;
+      this.top = clientY + pY;
       this.isOpen = true;
     });
   }

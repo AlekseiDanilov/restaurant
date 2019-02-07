@@ -22,84 +22,35 @@ const styles = theme => ({
 });
 
 class EditRoomPanel extends React.Component {
-  konva = React.createRef();
-  roomElement = React.createRef();
-
-  updateDimensions = () => {
-    const {roomStore} = this.props;
-    const {currentRoom} = roomStore;
-    const clientHeight = document.body.clientHeight - 200;
-    const {clientWidth} = this.roomElement.current;
-    currentRoom.setDimensions(clientWidth, clientHeight);
-  };
-
-  haveIntersection = (r1, r2) => {
-    return !(
-      r2.x > r1.x + r1.width ||
-      r2.x + r2.width < r1.x ||
-      r2.y > r1.y + r1.height ||
-      r2.y + r2.height < r1.y
-    );
-  };
-
-  componentDidMount() {
-    const {roomStore, currentRoomId} = this.props;
-    roomStore.loadCurrentRoom(currentRoomId).then(() => {
-      if (roomStore.currentRoom) {
-        this.updateDimensions();
-        window.addEventListener("resize", this.updateDimensions);
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    const {roomStore} = this.props;
-    if (roomStore.currentRoom) {
-      window.removeEventListener("resize", this.updateDimensions);
-    }
-  }
-
   render() {
     const {classes, roomStore} = this.props;
-    const {currentRoom, furnitureContextMenuModel} = roomStore;
+    const {currentRoom, roomViewModel, furnitureContextMenuModel} = roomStore;
+    const {
+      clientHeight: height,
+      clientWidth: width,
+      marginLeft,
+      onDropFurniture,
+      konva,
+      roomElement,
+      validateCollision,
+      correctFurniturePosition,
+      setFurniturePosition
+    } = roomViewModel;
 
     if (!currentRoom) {
-      return <div ref={this.roomElement}/>;
+      return <div ref={roomViewModel.roomElement}/>;
     }
 
     return (
-      <div ref={this.roomElement}>
+      <div ref={roomElement}>
         <Paper
-          style={{
-            height: currentRoom.clientHeight,
-            width: currentRoom.clientWidth,
-            marginLeft: currentRoom.marginLeft
-          }}
+          style={{height, width, marginLeft}}
           onDragOver={e => e.preventDefault()}
-          onDrop={e => {
-            e.preventDefault();
-            const {layerX: x, layerY: y} = e.nativeEvent;
-            const kind = e.dataTransfer.getData("kind");
-            const offsetY = e.dataTransfer.getData("offsetY");
-            const offsetX = e.dataTransfer.getData("offsetX");
-            const mu = currentRoom.meterUnit.get();
-            currentRoom.addFurniture(kind, (x - offsetX) / mu, (y - offsetY) / mu);
-          }}>
-          <Stage ref={this.konva}
-                 width={currentRoom.clientWidth}
-                 height={currentRoom.clientHeight}>
-            <Layer onDragEnd={e => {
-              const {currentTarget: layer} = e;
-              const ch1 = [...layer.children];
-              const ch2 = [...layer.children];
-              currentRoom.hasCollision = !!ch1.find(g => {
-                  return ch2
-                    .filter(gg => gg !== g)
-                    .find(gg => {
-                      return this.haveIntersection(g.getClientRect(), gg.getClientRect())
-                    });
-                });
-            }}>{currentRoom.furniture.map((f, key) => (
+          onDrop={onDropFurniture}>
+          <Stage ref={konva}
+                 width={width}
+                 height={height}>
+            <Layer onDragEnd={validateCollision}>{currentRoom.furniture.map((f, key) => (
               <Group key={key}
                      draggable
                      scaleX={f.scale}
@@ -108,18 +59,9 @@ class EditRoomPanel extends React.Component {
                      offsetY={f.offsetY}
                      x={f.x}
                      y={f.y}
-                     onDragEnd={e => {
-                       const {x, y} = e.target.getPosition();
-                       const newX = Math.max(0, Math.min(x, currentRoom.clientWidth - f.width));
-                       const newY = Math.max(0, Math.min(y, currentRoom.clientHeight - f.height));
-                       f.setPosition(newX, newY);
-                     }}
-                     dragBoundFunc={position => {
-                       return ({
-                         x: Math.max(0, Math.min(position.x, currentRoom.clientWidth - f.width)),
-                         y: Math.max(0, Math.min(position.y, currentRoom.clientHeight - f.height))
-                       })
-                     }}
+                     onDragEnd={setFurniturePosition(f)}
+                     dragBoundFunc={correctFurniturePosition(f)}
+                     onDblTap={furnitureContextMenuModel.openByTouch(f, marginLeft, 200)}
                      onContextMenu={furnitureContextMenuModel.open(f)}>
                 <Path
                   x={f.x}
@@ -147,8 +89,7 @@ class EditRoomPanel extends React.Component {
         <FurnitureContextMenu/>
         <Snackbar
           anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-
-          open={currentRoom.hasCollision || currentRoom.isErrorNumbers}>
+          open={roomViewModel.hasCollision || currentRoom.isErrorNumbers}>
           <SnackbarContent
             className={classes.warning}
             message="Arrange the furniture without collisions and assign a unique number for each"
@@ -162,16 +103,32 @@ class EditRoomPanel extends React.Component {
           action={[
             <IconButton key='save'
                         color="inherit"
-                        disabled={currentRoom.hasCollision || currentRoom.isErrorNumbers}
                         onClick={() => {
-              roomStore.update(currentRoom)
-            }}>
+                          roomStore.update(currentRoom)
+                        }}>
               <SaveIcon/>
             </IconButton>
           ]}
         />
       </div>
     );
+  }
+
+  componentDidMount() {
+    const {roomStore, currentRoomId} = this.props;
+    const {roomViewModel} = roomStore;
+    roomStore.loadCurrentRoom(currentRoomId).then(() => {
+      roomViewModel.updateDimensions();
+      roomViewModel.validateCollision();
+      window.addEventListener("resize", () => roomViewModel.updateDimensions());
+    });
+  }
+
+  componentWillUnmount() {
+    const {roomStore} = this.props;
+    if (roomStore.currentRoom) {
+      window.removeEventListener("resize", this.updateDimensions);
+    }
   }
 }
 

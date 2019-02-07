@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import ClickAwayListener from "@material-ui/core/es/ClickAwayListener/ClickAwayListener";
 import withDialog from "../../../hoc/withDialog";
 import ChangeFurnitureNumberDialog from "./ChangeFurnitureNumberDialog";
+import Paper from "@material-ui/core/es/Paper/Paper";
 
 const styles = theme => ({
   menuItem: {
@@ -30,6 +31,7 @@ class FurnitureContextMenu extends React.Component {
         anchorPosition={{top, left}}
       >
         <ClickAwayListener onClickAway={close}>
+          <Paper>
           <MenuList>
             <MenuItem className={classes.menuItem}
                       onClick={deleteFurniture}>
@@ -40,6 +42,7 @@ class FurnitureContextMenu extends React.Component {
               Change number
             </MenuItem>
           </MenuList>
+          </Paper>
         </ClickAwayListener>
       </Popover>
     );
