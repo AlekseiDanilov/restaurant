@@ -5,12 +5,10 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/AddBox';
 import tileData from './tileData';
 import mapRouteParamToProps from "../../../hoc/mapRouteParamToProps";
-import Paper from "@material-ui/core/es/Paper/Paper";
+import Paper from "@material-ui/core/Paper/Paper";
+import {DragDropContainer} from 'react-drag-drop-container';
 
 const styles = theme => ({
   root: {
@@ -48,27 +46,13 @@ class FurniturePanel extends React.Component {
         <GridList className={classes.gridList} cols={1}>
           {tileData.map(tile => (
             <GridListTile key={tile.img} style={{width: tile.width, height: tile.height}}>
-              <GridListTileBar
-                title={tile.title}
-                className={classes.titleBar}
-                actionIcon={
-                  <IconButton color="inherit" onClick={() => {
-                    currentRoom.addFurniture(tile.kind);
-                  }}>
-                    <AddIcon color="inherit"/>
-                  </IconButton>
-                }
-              />
-              <img src={tile.img}
-                   draggable={true}
-                   className={classes.tile}
-                   onDragStart={e => {
-                     const {offsetX, offsetY} = e.nativeEvent;
-                     e.dataTransfer.setData("kind", tile.kind);
-                     e.dataTransfer.setData("offsetX", offsetX);
-                     e.dataTransfer.setData("offsetY", offsetY);
-                   }}
-                   alt={tile.title}/>
+              <DragDropContainer targetKey="furniture"
+                                 dragData={{kind: tile.kind}}>
+                <img src={tile.img}
+                     className={classes.tile}
+                     style={{height: tile.height}}
+                     alt={tile.title}/>
+              </DragDropContainer>
             </GridListTile>
           ))}
         </GridList>

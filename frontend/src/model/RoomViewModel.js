@@ -34,14 +34,12 @@ export default class RoomViewModel {
   };
 
   onDropFurniture(e) {
-    e.preventDefault();
-    const {layerX: x, layerY: y} = e.nativeEvent;
-    const kind = e.dataTransfer.getData("kind");
-    const offsetY = e.dataTransfer.getData("offsetY");
-    const offsetX = e.dataTransfer.getData("offsetX");
+    const {x, y, dragData, target} = e;
+    const {kind} = dragData;
+    const {offsetTop, offsetLeft} = target.offsetParent;
     const mu = this.meterUnit.get();
 
-    this.store.currentRoom.addFurniture(kind, (x - offsetX) / mu, (y - offsetY) / mu);
+    this.store.currentRoom.addFurniture(kind, (x - offsetLeft) / mu, (y - offsetTop) / mu);
     setTimeout(this.validateCollision, 0);
   }
 
