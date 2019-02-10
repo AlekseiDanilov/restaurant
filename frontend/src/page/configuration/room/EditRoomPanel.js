@@ -105,7 +105,7 @@ class EditRoomPanel extends React.Component {
       if (roomStore.currentRoom) {
         roomViewModel.updateDimensions();
         roomViewModel.validateCollision();
-        window.addEventListener("resize", () => roomViewModel.updateDimensions());
+        window.addEventListener("resize", (e) => roomViewModel.updateDimensions());
       }
     });
   }

@@ -8,6 +8,7 @@ export default class RoomViewModel {
 
   konva = React.createRef();
   roomElement = React.createRef();
+  furniturePanel = React.createRef();
 
   meterUnit = observable.box(1);
   store;
@@ -27,8 +28,14 @@ export default class RoomViewModel {
     this.meterUnit.set(meterUnit.toFixed(4));
   }
 
-  updateDimensions(topOffset = 200) {
-    const clientHeight = document.body.clientHeight - topOffset;
+  updateDimensions() {
+    const {
+      clientHeight: fpClientHeight,
+      offsetTop: fpOffsetTop
+    } = this.furniturePanel.current;
+    const offsetTop = fpClientHeight + fpOffsetTop + 28;
+    console.log(this.furniturePanel, offsetTop);
+    const clientHeight = document.body.clientHeight - offsetTop;
     const {clientWidth} = this.roomElement.current;
     this.setDimensions(clientWidth, clientHeight);
   };
@@ -37,7 +44,7 @@ export default class RoomViewModel {
     const {x, y, dragData, target} = e;
     const {kind} = dragData;
     const {offsetTop, offsetLeft} = target.offsetParent;
-    const newF = this.store.currentRoom.addFurniture(kind, 0, 0);
+    const newF = this.store.currentRoom.addFurniture(kind);
     const {x: newX, y: newY} = this.correctFurniturePosition(newF)({
       x: x - offsetLeft,
       y: y - offsetTop
