@@ -13,6 +13,7 @@ export default class FurnitureModel {
   constructor(meterUnit, json) {
     this.meterUnit = meterUnit;
     if (json) {
+      this.id = json.id;
       this.kind = json.kind;
       this.number = json.number;
       this.xMeter = json.x;
@@ -34,40 +35,23 @@ export default class FurnitureModel {
   }
 
   get width() {
-    return this.figure.figureData.width * this.scale;
+    return this.figure.figureData.width * this.meterUnit.get();
   }
 
   get height() {
-    return this.figure.figureData.height * this.scale;
+    return this.figure.figureData.height * this.meterUnit.get();
   }
 
-  get offsetX() {
-    return this.x - this.figure.figureData.offsetX;
-  }
-
-  get offsetY() {
-    return this.y - this.figure.figureData.offsetY;
-  }
-
-  get scale() {
-    return this.meterUnit.get() / this.figure.figureData.width;
-  }
-
-  get pathData() {
-    return this.figure.figureData.path;
+  get srcPath() {
+    return this.figure.figureData.srcPath;
   }
 
   get figure() {
     return furnitureType[this.kind];
   }
 
-  get chairs() {
-    return this.figure.chairs.map((c, i) => ({
-      key: i,
-      data: furnitureType[c.type].path,
-      x: this.x + c.offsetX,
-      y: this.y + c.offsetY,
-    }));
+  get numberSeats() {
+    return this.figure.chairs;
   }
 
   get toJS() {
@@ -76,7 +60,7 @@ export default class FurnitureModel {
       number: this.number,
       x: this.xMeter,
       y: this.yMeter,
-      numberSeats: this.chairs.length
+      numberSeats: this.numberSeats
     };
   }
 }
@@ -90,7 +74,6 @@ decorate(FurnitureModel, {
   y: computed,
   width: computed,
   height: computed,
-  scale: computed,
   figure: computed,
   setPosition: action.bound,
   meterUnit: observable.ref,

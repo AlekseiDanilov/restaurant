@@ -37,9 +37,12 @@ export default class RoomViewModel {
     const {x, y, dragData, target} = e;
     const {kind} = dragData;
     const {offsetTop, offsetLeft} = target.offsetParent;
-    const mu = this.meterUnit.get();
-
-    this.store.currentRoom.addFurniture(kind, (x - offsetLeft) / mu, (y - offsetTop) / mu);
+    const newF = this.store.currentRoom.addFurniture(kind, 0, 0);
+    const {x: newX, y: newY} = this.correctFurniturePosition(newF)({
+      x: x - offsetLeft,
+      y: y - offsetTop
+    });
+    newF.setPosition(newX, newY);
     setTimeout(this.validateCollision, 0);
   }
 
@@ -59,34 +62,25 @@ export default class RoomViewModel {
     }
   }
 
-  correctPosition({x, y}) {
-    return ({
-      x: Math.max(0, Math.min(x, this.clientWidth)),
-      y: Math.max(0, Math.min(y, this.clientHeight))
-    })
-  }
-
   validateCollision() {
     const [layer] = this.konva.current.getLayers();
     const ch1 = [...layer.children];
     const ch2 = [...layer.children];
-    this.hasCollision = !!ch1.find(g => {
-      return ch2
-        .filter(gg => gg !== g)
-        .find(gg => {
-          return this.haveIntersection(g.getClientRect(), gg.getClientRect())
-        });
-    });
-  };
-
-  haveIntersection = (r1, r2) => {
-    return !(
-      r2.x > r1.x + r1.width ||
-      r2.x + r2.width < r1.x ||
-      r2.y > r1.y + r1.height ||
-      r2.y + r2.height < r1.y
+    this.hasCollision = !!ch1.find(g => ch2
+      .filter(gg => gg !== g)
+      .find(gg => this.haveIntersection(
+        g.getClientRect(),
+        gg.getClientRect()
+      ))
     );
   };
+
+  haveIntersection = (r1, r2) => !(
+    r2.x > r1.x + r1.width ||
+    r2.x + r2.width < r1.x ||
+    r2.y > r1.y + r1.height ||
+    r2.y + r2.height < r1.y
+  );
 
   get currentRoom() {
     return this.store.currentRoom;
@@ -108,4 +102,3 @@ decorate(RoomViewModel, {
   setFurniturePosition: action.bound,
   onDropFurniture: action.bound
 });
-

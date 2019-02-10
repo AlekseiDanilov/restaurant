@@ -31,12 +31,15 @@ export default class RoomModel {
 
 
   addFurniture(kind, x = 0, y = 0) {
-    this.furniture.push(new FurnitureModel(this.viewModel.meterUnit, {
+    const f = new FurnitureModel(this.viewModel.meterUnit, {
+      id: Date.now().toString(),
       kind,
       x: x,
       y: y,
       number: this.nextFurnitureNumber
-    }))
+    });
+    const indexF = this.furniture.push(f);
+    return this.furniture[indexF - 1];
   }
 
   removeFurniture(frnt) {

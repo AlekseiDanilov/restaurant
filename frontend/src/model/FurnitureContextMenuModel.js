@@ -34,7 +34,6 @@ export default class FurnitureContextMenuModel {
   openByTouch(f, pX, pY) {
     return action((e) => {
       const {currentTarget: target} = e;
-      //alert(JSON.stringify(e));
       const {x: clientX, y: clientY} = target.getAttrs();
       this.furniture = f;
       this.left = clientX + pX;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Group, Layer, Path, Stage, Text} from 'react-konva';
+import {Layer, Stage} from 'react-konva';
 import {withStyles} from '@material-ui/core';
 import {compose} from 'recompose';
 import {inject, observer} from 'mobx-react';
@@ -11,6 +11,7 @@ import SaveIcon from '@material-ui/icons/SaveOutlined';
 import FurnitureContextMenu from "./FurnitureContextMenu";
 import SnackbarContent from "@material-ui/core/es/SnackbarContent/SnackbarContent";
 import {DropTarget} from 'react-drag-drop-container';
+import Furniture from "../../../component/furniture/Furniture";
 
 const styles = theme => ({
   snackbar: {
@@ -44,51 +45,31 @@ class EditRoomPanel extends React.Component {
 
     return (
       <div ref={roomElement}>
-        <DropTarget targetKey="furniture"
-                    onHit={onDropFurniture}>
-          <Paper
-            style={{height, width, marginLeft}}>
+        <Paper
+          style={{height, width, marginLeft}}>
+          <DropTarget targetKey="furniture"
+                      onHit={onDropFurniture}>
             <Stage ref={konva}
                    width={width}
                    height={height}>
-              <Layer onDragEnd={validateCollision}>{currentRoom.furniture.map((f, key) => (
-
-                <Group key={key}
-                       draggable
-                       scaleX={f.scale}
-                       scaleY={f.scale}
-                       offsetX={f.offsetX}
-                       offsetY={f.offsetY}
-                       x={f.x}
-                       y={f.y}
-                       onDragEnd={setFurniturePosition(f)}
-                       dragBoundFunc={correctFurniturePosition(f)}
-                       onDblTap={furnitureContextMenuModel.openByTouch(f, marginLeft, 200)}
-                       onContextMenu={furnitureContextMenuModel.open(f)}>
-                  <Path
-                    x={f.x}
-                    y={f.y}
-                    data={f.pathData}
-                    fill='yellow'
+              <Layer onDragEnd={validateCollision}>
+                {currentRoom.furniture.map((f, key) => (
+                  <Furniture key={f.id}
+                             furniture={f}
+                             groupProps={f => ({
+                               draggable: true,
+                               onDragEnd: setFurniturePosition(f),
+                               dragBoundFunc: correctFurniturePosition(f),
+                               onDblTap: furnitureContextMenuModel.openByTouch(f, marginLeft, 200),
+                               onContextMenu: furnitureContextMenuModel.open(f)
+                             })}
                   />
-                  <Text x={f.x}
-                        y={f.y}
-                        width={40}
-                        height={45}
-                        verticalAlign="middle"
-                        align="center"
-                        fill="grey"
-                        fontSize={20}
-                        text={f.number}
-                  />
-                  {f.chairs.map(c =>
-                    <Path key={c.key} x={c.x} y={c.y} data={c.data} fill='brown'/>
-                  )}
-                </Group>
-              ))}</Layer>
+                ))}
+              </Layer>
             </Stage>
-          </Paper>
-        </DropTarget>
+
+          </DropTarget>
+        </Paper>
         <FurnitureContextMenu/>
         <Snackbar
           anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
@@ -121,9 +102,11 @@ class EditRoomPanel extends React.Component {
     const {roomStore, currentRoomId} = this.props;
     const {roomViewModel} = roomStore;
     roomStore.loadCurrentRoom(currentRoomId).then(() => {
-      roomViewModel.updateDimensions();
-      roomViewModel.validateCollision();
-      window.addEventListener("resize", () => roomViewModel.updateDimensions());
+      if (roomStore.currentRoom) {
+        roomViewModel.updateDimensions();
+        roomViewModel.validateCollision();
+        window.addEventListener("resize", () => roomViewModel.updateDimensions());
+      }
     });
   }
 

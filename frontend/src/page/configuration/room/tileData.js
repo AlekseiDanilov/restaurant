@@ -1,28 +1,28 @@
 export default [
   {
-    img: "/circle4.png",
+    img: "/furniture/circle4.png",
     kind: "circle4",
     title: "4 seats",
-    width: 90,
-    height: 90
+    width: 85,
+    height: 85
   }, {
-    img: "/circle2.png",
+    img: "/furniture/circle2.png",
     kind: "circle2",
     title: "2 seats",
-    width: 90,
-    height: 90
+    width: 85,
+    height: 85
   }, {
-    img: "/rect4.png",
+    img: "/furniture/rect4.png",
     kind: "rect4",
     title: "4 seats",
-    width: 90,
-    height: 90
+    width: 120,
+    height: 85
   }, {
-    img: "/rect2.png",
+    img: "/furniture/rect2.png",
     kind: "rect2",
     title: "2 seats",
-    width: 90,
-    height: 90
+    width: 80,
+    height: 85
   },
 ];
 

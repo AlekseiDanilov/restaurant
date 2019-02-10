@@ -20,7 +20,7 @@ class ChangeFurnitureNumberDialog extends React.Component {
     this.viewModel = createViewModel(model);
 
     this.numberField = new TextFieldModel(this.viewModel, "number")
-      .withLabel("New number").required();
+      .withLabel("New number");
   }
 
   handleSubmit = e => {
@@ -42,6 +42,7 @@ class ChangeFurnitureNumberDialog extends React.Component {
       >
         <form onSubmit={this.handleSubmit}>
           <TextField
+            autoFocus={true}
             model={this.numberField}
             margin="normal"
             fullWidth

@@ -14,22 +14,26 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    overflow: 'hidden',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    overflow: 'hidden'
-  },
-  gridList: {
-    flexWrap: 'nowrap',
     justifyContent: 'center'
   },
-
+  gridList: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   tile: {
     cursor: 'grab',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-
-  titleBar: {
-    height: 25
-  },
+  img: {
+    height: '80px'
+  }
 });
 
 
@@ -43,14 +47,17 @@ class FurniturePanel extends React.Component {
     }
     return (
       <Paper className={classes.root}>
-        <GridList className={classes.gridList} cols={1}>
+        <GridList className={classes.gridList} cols={4}>
           {tileData.map(tile => (
-            <GridListTile key={tile.img} style={{width: tile.width, height: tile.height}}>
+            <GridListTile key={tile.img} className={classes.tile} style={{
+              width: tile.width,
+              height: tile.height
+            }}>
               <DragDropContainer targetKey="furniture"
+                                 className={classes.tile}
                                  dragData={{kind: tile.kind}}>
                 <img src={tile.img}
-                     className={classes.tile}
-                     style={{height: tile.height}}
+                     className={classes.img}
                      alt={tile.title}/>
               </DragDropContainer>
             </GridListTile>
