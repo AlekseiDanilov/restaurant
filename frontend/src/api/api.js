@@ -19,7 +19,7 @@ class Api {
       if (status === 401) {
         redirecter.to('/login');
       }
-      return response;
+      throw err;
     });
   }
 

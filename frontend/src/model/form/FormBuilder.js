@@ -1,5 +1,6 @@
 import {action, computed, decorate, extendObservable, observable} from 'mobx';
 import TextFieldModel from "./TextFieldModel";
+import DateFieldModel from "./DateFieldModel";
 
 export default class FormBuilder {
 
@@ -13,7 +14,15 @@ export default class FormBuilder {
   text(name, makeField) {
     const field = new TextFieldModel(this.model, name);
     extendObservable(this.fields, {
-      [name]: makeField(field)
+      [name]: makeField ? makeField(field) : field
+    });
+    return this;
+  }
+
+  date(name, makeField) {
+    const field = new DateFieldModel(this.model, name);
+    extendObservable(this.fields, {
+      [name]: makeField ? makeField(field) : field
     });
     return this;
   }

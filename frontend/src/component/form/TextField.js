@@ -12,13 +12,13 @@ class TextField extends React.Component {
 
   render() {
     const {model, ...props} = this.props;
-    const {name, label, value, error, onChange} = model;
+    const {name, label, value, defaultValue, error, onChange} = model;
     return (
       <MuiTextField
         error={!!error}
         id={name}
         label={label}
-        value={value || ""}
+        value={value || defaultValue}
         onChange={onChange}
         helperText={error}
         {...props}
