@@ -1,6 +1,6 @@
 import {BadRequestException, Body, Controller, Get, NotFoundException, Post, Put, UseGuards} from '@nestjs/common';
 import {AuthGuard} from "@nestjs/passport";
-import {RestaurantService} from "../../dist/restaurant/restaurant.service";
+import {RestaurantService} from "./restaurant.service";
 import {RestaurantDto} from "./restaurant-dto";
 import {CryptoHelper} from "../helper/cryptoHelper";
 import {Restaurant} from "./restaurant";
