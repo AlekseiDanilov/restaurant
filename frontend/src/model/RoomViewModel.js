@@ -34,7 +34,6 @@ export default class RoomViewModel {
       offsetTop: fpOffsetTop
     } = this.furniturePanel.current;
     const offsetTop = fpClientHeight + fpOffsetTop + 28;
-    console.log(this.furniturePanel, offsetTop);
     const clientHeight = document.body.clientHeight - offsetTop;
     const {clientWidth} = this.roomElement.current;
     this.setDimensions(clientWidth, clientHeight);

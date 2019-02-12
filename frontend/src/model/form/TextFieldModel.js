@@ -6,6 +6,7 @@ export default class TextFieldModel {
   model = null;
   fieldName = '';
   validators = [];
+  defaultValue = '';
 
   constructor(model, fieldName) {
     this.model = model;
