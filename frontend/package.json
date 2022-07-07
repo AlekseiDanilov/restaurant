@@ -16,7 +16,7 @@
     "mobx": "4.6.0",
     "mobx-react": "5.4.2",
     "mobx-utils": "5.1.0",
-    "moment": "2.24.0",
+    "moment": "2.29.4",
     "prop-types": "15.6.2",
     "react": "16.7.0",
     "react-dom": "16.7.0",
