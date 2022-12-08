@@ -21,7 +21,7 @@
   "dependencies": {
     "@nest-middlewares/cookie-parser": "^5.1.1",
     "@nestjs/common": "^5.4.0",
-    "@nestjs/core": "^5.4.0",
+    "@nestjs/core": "^9.2.1",
     "@nestjs/jwt": "^0.2.1",
     "@nestjs/passport": "^5.1.0",
     "@types/knex": "^0.15.1",
